@@ -107,3 +107,26 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 18:08: **Integration**: Paper trading + strategy API endpoints on health server (`/paper`, `/strategies`) and dashboard (`/api/paper`, `/api/strategies`)
 - 2026-03-23 18:08: **Integration**: Dashboard panels — Paper Trading (capital, P&L, Sharpe, win rate) and Strategy Rankings (recommended, confidence, decay alerts, ranked table)
 - 2026-03-23 18:08: **Docs**: SKILL.md updated with paper trading and strategy analyzer sections
+- 2026-03-23 19:38: **Feature**: Monte Carlo Risk Simulator (`utils/monteCarlo.ts`) — stress-test strategies against thousands of synthetic market paths
+  - Geometric Brownian Motion (GBM) with mean-reversion drift for realistic price generation
+  - Seeded PRNG (xoshiro128**) for reproducible simulations
+  - Tick-by-tick strategy replay via existing backtest engine for all 4 strategies
+  - Risk metrics: VaR (90/95/99%), Conditional VaR (Expected Shortfall), P(profit), P(ruin)
+  - Distribution statistics: mean, median, std, skewness, kurtosis, percentiles
+  - Confidence intervals (80/90/95%) on expected ROI
+  - ROI histogram for charting
+  - Strategy comparison with risk-adjusted ranking: E[ROI] × (1-P(ruin)) / VaR_95
+  - Text report generator
+- 2026-03-23 19:38: **Feature**: Monte Carlo CLI (`cli/monte-carlo.ts`) — standalone command-line interface
+  - `--strategy` for single strategy, `--compare` for all 4
+  - `--sims`, `--volatility`, `--seed`, `--balance`, `--trade-amount` flags
+  - `--export-json` for programmatic analysis
+- 2026-03-23 19:38: **Feature**: ML Predictor (`utils/mlPredictor.ts`) — TensorFlow.js price direction predictor
+  - Neural network: 2 dense layers + dropout, sigmoid output
+  - Online learning: retrains on sliding window every N ticks
+  - 8 features: price_change_pct, rsi, bb_pct_b, macd_hist, sma_cross, vwap, momentum_5/10
+  - Feature importance tracking, prediction logging with accuracy
+- 2026-03-23 19:38: **Feature**: Dashboard Monte Carlo panel — P(Profit), P(Ruin), E[ROI], VaR 95% cards, strategy ranking table, ROI histogram
+- 2026-03-23 19:38: **Feature**: `/montecarlo` endpoint on health server, `/api/montecarlo` on dashboard server
+- 2026-03-23 19:38: **Docs**: SKILL.md updated with Monte Carlo documentation, CLI usage, API reference
+- 2026-03-23 19:38: **Pushed**: commit 1b739de to feat/openclaw-skill branch (PR blocked by GitHub rate limit — retry later)
