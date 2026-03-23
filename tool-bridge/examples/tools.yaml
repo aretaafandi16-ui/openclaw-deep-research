@@ -1,0 +1,158 @@
+# Example: tool-bridge configuration
+# Save as tools.yaml and run: node cli.mjs serve --config tools.yaml
+
+defaults:
+  timeout: 10000      # 10s default timeout
+  rateLimit: 60       # 60 req/min default
+  cache: 300          # 5min cache TTL
+
+tools:
+  # ─── Weather ──────────────────────────────────────────
+  weather:
+    description: Get current weather for a city
+    type: rest
+    method: GET
+    url: "https://wttr.in/{{args.city}}"
+    params:
+      format: j1
+    transform:
+      city: nearest_area[0].areaName[0].value
+      temp_c: current_condition[0].temp_C
+      humidity: current_condition[0].humidity
+      desc: current_condition[0].weatherDesc[0].value
+      wind: current_condition[0].windspeedKmph
+
+  # ─── HTTP Testing ────────────────────────────────────
+  http_get:
+    description: Make a GET request to any URL
+    type: rest
+    method: GET
+    url: "{{args.url}}"
+
+  http_post:
+    description: Make a POST request to any URL
+    type: rest
+    method: POST
+    url: "{{args.url}}"
+    body: "{{args.body}}"
+
+  # ─── System Info ─────────────────────────────────────
+  disk:
+    description: Check disk usage
+    type: cli
+    command: "df -h {{args.path || '/'}}"
+
+  memory:
+    description: Check memory usage
+    type: cli
+    command: "free -h"
+
+  top_processes:
+    description: Top processes by memory
+    type: cli
+    command: "ps aux --sort=-%mem | head -{{args.count || '10'}}"
+
+  # ─── Git ─────────────────────────────────────────────
+  git_log:
+    description: Git log for a repo
+    type: cli
+    command: "git -C {{args.path || '.'}} log --oneline -{{args.count || '10'}}"
+
+  git_status:
+    description: Git status
+    type: cli
+    command: "git -C {{args.path || '.'}} status --short"
+
+  git_diff:
+    description: Git diff
+    type: cli
+    command: "git -C {{args.path || '.'}} diff {{args.ref || ''}}"
+
+  # ─── GitHub (requires GITHUB_TOKEN env) ──────────────
+  github_repos:
+    description: List GitHub repositories
+    type: rest
+    method: GET
+    url: "https://api.github.com/user/repos"
+    headers:
+      Authorization: "Bearer {{env.GITHUB_TOKEN}}"
+      Accept: "application/vnd.github.v3+json"
+    params:
+      sort: "{{args.sort || 'updated'}}"
+      per_page: "{{args.per_page || '10'}}"
+
+  github_repo:
+    description: Get GitHub repo details
+    type: rest
+    method: GET
+    url: "https://api.github.com/repos/{{args.owner}}/{{args.repo}}"
+    headers:
+      Authorization: "Bearer {{env.GITHUB_TOKEN}}"
+      Accept: "application/vnd.github.v3+json"
+    transform:
+      name: name
+      stars: stargazers_count
+      forks: forks_count
+      language: language
+      description: description
+      default_branch: default_branch
+
+  # ─── CoinGecko (free, no auth) ──────────────────────
+  crypto_price:
+    description: Get cryptocurrency price
+    type: rest
+    method: GET
+    url: "https://api.coingecko.com/api/v3/simple/price"
+    params:
+      ids: "{{args.coin || 'bitcoin'}}"
+      vs_currencies: "{{args.currency || 'usd'}}"
+      include_24hr_change: "true"
+
+  crypto_market:
+    description: Get market data for a coin
+    type: rest
+    method: GET
+    url: "https://api.coingecko.com/api/v3/coins/{{args.coin || 'bitcoin'}}"
+    params:
+      localization: "false"
+      tickers: "false"
+      community_data: "false"
+    transform:
+      name: name
+      symbol: symbol
+      price: market_data.current_price.usd
+      market_cap: market_data.market_cap.usd
+      volume: market_data.total_volume.usd
+      change_24h: market_data.price_change_percentage_24h
+
+  # ─── News (GNews free tier) ─────────────────────────
+  news_search:
+    description: Search news articles (requires GNEWS_TOKEN env)
+    type: rest
+    method: GET
+    url: "https://gnews.io/api/v4/search"
+    params:
+      q: "{{args.query}}"
+      lang: "{{args.lang || 'en'}}"
+      max: "{{args.max || '5'}}"
+      token: "{{env.GNEWS_TOKEN}}"
+    cache: 600
+
+  # ─── File Operations ─────────────────────────────────
+  file_read:
+    description: Read a file's contents
+    type: cli
+    command: "cat {{args.path}}"
+    timeout: 5000
+
+  file_search:
+    description: Search for text in files
+    type: cli
+    command: "grep -r '{{args.pattern}}' {{args.path || '.'}} --include='{{args.glob || '*'}}' -l | head -20"
+    timeout: 10000
+
+  find_files:
+    description: Find files by name pattern
+    type: cli
+    command: "find {{args.path || '.'}} -name '{{args.pattern}}' -type f | head -{{args.limit || '20'}}"
+    timeout: 10000
