@@ -129,7 +129,19 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 19:38: **Feature**: Dashboard Monte Carlo panel — P(Profit), P(Ruin), E[ROI], VaR 95% cards, strategy ranking table, ROI histogram
 - 2026-03-23 19:38: **Feature**: `/montecarlo` endpoint on health server, `/api/montecarlo` on dashboard server
 - 2026-03-23 19:38: **Docs**: SKILL.md updated with Monte Carlo documentation, CLI usage, API reference
-- 2026-03-23 19:38: **Pushed**: commit 1b739de to feat/openclaw-skill branch (PR blocked by GitHub rate limit — retry later)
+- 2026-03-23 21:38: **Feature**: agent-store v1.1 — major upgrade
+  - SSE watch endpoint (`GET /ns/:ns/_watch`) for real-time subscriptions via Server-Sent Events
+  - Atomic counters: `incr`/`decr` with atomicity guarantee (HTTP + CLI + library + MCP)
+  - List operations: `lpush`, `lpop`, `lrange`, `llen` (HTTP + CLI + library + MCP)
+  - Set operations: `sadd`, `srem`, `smembers`, `sismember` (HTTP + CLI + library + MCP)
+  - EventEmitter integration: `store.on("change", handler)` for programmatic notifications
+  - 16 new MCP tools total (store_incr, store_decr, store_lpush, store_lpop, store_lrange, store_sadd, store_smembers)
+  - 8 new CLI commands (incr, decr, lpush, lpop, lrange, sadd, smembers, watch)
+  - 34 tests passing (added 16 new tests)
+  - Full README rewrite with complete API reference
+  - Committed as d199848, pushed to GitHub master
+
+- 2026-03-23 21:38: **Pushed**: commit d199848 to master (openclaw-deep-research)
 
 - 2026-03-23 20:08: **Feature**: Portfolio Manager (`utils/portfolio.ts`) — multi-market capital allocation
   - Kelly Criterion position sizing with fractional Kelly (25% default)
