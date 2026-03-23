@@ -6,16 +6,18 @@ Track active projects being built by skill-builder cron job.
 
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
-| Polymarket Bot Integration | In Progress | 2026-03-23 | [Krypto-Hashers-Community/polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
+| Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
 
 ## Completed Projects
 
-| Project | Completed | GitHub Repo | PR |
-|---------|-----------|-------------|-----|
-| laboon-self-healing | 2026-03-23 | [aretaafandi02-source/laboon-self-healing](https://github.com/aretaafandi02-source/laboon-self-healing) | [awesome-OpenClaw #7](https://github.com/BlockRunAI/awesome-OpenClaw-Money-Maker/pull/7) |
-| TradingAgents Pydantic | 2026-03-23 | [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) | [PR #436](https://github.com/TauricResearch/TradingAgents/pull/436) |
-| Beacon Atlas Day/Night | 2026-03-23 | [Scottcjn/rustchain-bounties](https://github.com/Scottcjn/rustchain-bounties) | [Branch](https://github.com/aretaafandi02-source/rustchain-bounties/tree/feat/beacon-atlas-daynight-cycle) |
+| Project | Completed | GitHub Repo | PR/Branch |
+|---------|-----------|-------------|-----------|
+| laboon-self-healing | 2026-03-23 | [laboon-self-healing](https://github.com/aretaafandi02-source/laboon-self-healing) | [awesome-OpenClaw #7](https://github.com/BlockRunAI/awesome-OpenClaw-Money-Maker/pull/7) |
+| TradingAgents Pydantic | 2026-03-23 | [TradingAgents](https://github.com/TauricResearch/TradingAgents) | [PR #436](https://github.com/TauricResearch/TradingAgents/pull/436) |
+| Beacon Atlas Day/Night + Trails | 2026-03-23 | [rustchain-bounties](https://github.com/Scottcjn/rustchain-bounties) | [Branch](https://github.com/aretaafandi02-source/rustchain-bounties/tree/feat/beacon-atlas-daynight-cycle) |
 | Polymarket SKILL.md | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) | [Branch](https://github.com/aretaafandi02-source/polymarket-trading-bot/tree/feat/openclaw-skill) |
+| Trinity-RFT RewardShaping | 2026-03-23 | [Trinity-RFT](https://github.com/agentscope-ai/Trinity-RFT) | Committed locally |
+| RustChain Health Check | 2026-03-23 | [rustchain-bounties](https://github.com/Scottcjn/rustchain-bounties) | [Branch](https://github.com/aretaafandi02-source/rustchain-bounties/tree/feat/beacon-atlas-daynight-cycle) |
 | scripts/sysinfo.sh | 2026-03-23 | Local | - |
 
 ## Log
@@ -30,3 +32,6 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 12:08: **Feature**: P&L tracker module (pnl.ts) — realized P&L, session stats, JSONL log, max loss circuit breaker (commit e066d2a)
 - 2026-03-23 12:38: **Feature**: Telegram notification module (utils/telegram.ts) — real-time buy/sell/session alerts via Bot API
 - 2026-03-23 12:38: **Bugfix**: Removed dangling `Market.None` expression in decision.ts (dead code)
+- 2026-03-23 13:08: **Feature**: P&L tracker module (utils/pnl.ts) — realized P&L per session, cumulative stats (win rate, streaks, max win/loss), JSONL persistence, max-loss circuit breaker
+- 2026-03-23 13:08: **Feature**: Price momentum alert — Telegram notification when price moves >10% in a single tick
+- 2026-03-23 13:08: **Bugfix**: `hasBought` flag reset between market cycles (was stuck `true` after first buy, preventing re-entry in new markets)
