@@ -1,11 +1,23 @@
 {
-  "lastScan": "2026-03-23T19:45:00Z",
+  "lastScan": "2026-03-23T21:45:00Z",
   "contributions": [
     {
       "date": "2026-03-23",
       "repo": "aretaafandi02-source/solana-agent-lite",
       "type": "feature",
       "description": "Added token holder analysis, liquidity detection, and risk assessment (holders.js)"
+    },
+    {
+      "date": "2026-03-23",
+      "repo": "solana-agent-reputation",
+      "type": "original-tool",
+      "description": "Created Solana Agent Reputation Scorer - zero-dep wallet/token scoring tool, published to GitHub, submitted to awesome-solana-ai (#103)"
+    },
+    {
+      "date": "2026-03-23",
+      "repo": "solana-foundation/awesome-solana-ai",
+      "type": "issue",
+      "description": "Issue #103: Suggested adding Solana Agent Reputation Scorer to Tools/Infrastructure section"
     }
   ],
   "observedIssues": {
