@@ -1,3 +1,12 @@
+---
+name: summarizer
+description: >
+  Fetch URLs, extract text from PDFs, or paste text — get concise markdown summaries.
+  Supports batch processing, disk caching, content quality scoring, and multiple output formats
+  (bullets, paragraph, outline). Use when: summarizing web articles, extracting text from PDFs,
+  processing long text into concise format, or batch-processing multiple URLs.
+---
+
 # Summarizer Skill
 
 Fetch URLs, extract text from PDFs, or paste text — get concise markdown summaries.
