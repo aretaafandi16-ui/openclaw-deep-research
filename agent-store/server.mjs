@@ -166,6 +166,42 @@ function checkExpired() {
   }
 }
 
+// ── Rate Limiting ─────────────────────────────────────────────────
+
+const rateLimits = {
+  /** ip → { count, windowStart } */
+  _clients: new Map(),
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000"), // 1 minute
+  maxRequests: parseInt(process.env.RATE_LIMIT_MAX || "300"), // 300 req/min per IP
+  enabled: process.env.RATE_LIMIT !== "false",
+
+  check(ip) {
+    if (!this.enabled) return { allowed: true };
+    const now = Date.now();
+    let client = this._clients.get(ip);
+    if (!client || now - client.windowStart > this.windowMs) {
+      client = { count: 0, windowStart: now };
+      this._clients.set(ip, client);
+    }
+    client.count++;
+    const remaining = Math.max(0, this.maxRequests - client.count);
+    if (client.count > this.maxRequests) {
+      return { allowed: false, retryAfter: Math.ceil((this.windowMs - (now - client.windowStart)) / 1000) };
+    }
+    return { allowed: true, remaining };
+  },
+
+  // Cleanup stale entries every 5 minutes
+  _cleanup: setInterval(() => {
+    const now = Date.now();
+    for (const [ip, client] of rateLimits._clients) {
+      if (now - client.windowStart > rateLimits.windowMs * 2) {
+        rateLimits._clients.delete(ip);
+      }
+    }
+  }, 300000),
+};
+
 // ── Pattern Matching ────────────────────────────────────────────────
 
 function globMatch(pattern, str) {
@@ -406,6 +442,74 @@ const routes = {
     })),
     totalKeys: [...store.values()].reduce((s, m) => s + m.size, 0),
   }),
+
+  // Batch get — POST /ns/:namespace/_mget  body = { keys: [...] }
+  "POST /ns/:namespace/_mget": async (params, req) => {
+    const body = await readBody(req);
+    const keys = body.keys;
+    if (!Array.isArray(keys)) return { error: "Body must be { keys: string[] }" };
+
+    const entries = getNamespace(params.namespace);
+    const results = {};
+    for (const key of keys) {
+      stats.totalGets++;
+      const entry = entries.get(key);
+      if (!entry || (entry.expiresAt && Date.now() > entry.expiresAt)) {
+        results[key] = null;
+      } else {
+        results[key] = entry.value;
+      }
+    }
+    return { namespace: params.namespace, results };
+  },
+
+  // Batch set — PUT /ns/:namespace/_mset  body = { entries: [{key, value, ttl?}] }
+  "PUT /ns/:namespace/_mset": async (params, req) => {
+    const body = await readBody(req);
+    const batchEntries = body.entries;
+    if (!Array.isArray(batchEntries)) return { error: "Body must be { entries: [{key, value, ttl?}] }" };
+
+    const entries = getNamespace(params.namespace);
+    const now = new Date().toISOString();
+    const results = [];
+
+    for (const item of batchEntries) {
+      stats.totalSets++;
+      const { key, value, ttl } = item;
+      if (!key || value === undefined) {
+        results.push({ key, error: "Missing key or value" });
+        continue;
+      }
+      const existing = entries.get(key);
+      entries.set(key, {
+        value,
+        createdAt: existing?.createdAt || now,
+        updatedAt: now,
+        expiresAt: ttl ? Date.now() + ttl * 1000 : existing?.expiresAt || null,
+      });
+      results.push({ key, ok: true });
+    }
+
+    scheduleSave();
+    return { namespace: params.namespace, count: results.length, results };
+  },
+
+  // Batch delete — POST /ns/:namespace/_mdelete  body = { keys: [...] }
+  "POST /ns/:namespace/_mdelete": async (params, req) => {
+    const body = await readBody(req);
+    const keys = body.keys;
+    if (!Array.isArray(keys)) return { error: "Body must be { keys: string[] }" };
+
+    const entries = getNamespace(params.namespace);
+    let deleted = 0;
+    for (const key of keys) {
+      stats.totalDeletes++;
+      if (entries.delete(key)) deleted++;
+    }
+    if (entries.size === 0) store.delete(params.namespace);
+    scheduleSave();
+    return { namespace: params.namespace, deleted, total: keys.length };
+  },
 };
 
 // ── Router ──────────────────────────────────────────────────────────
@@ -448,6 +552,17 @@ function matchRoute(method, pathname, query) {
 
 const server = createServer(async (req, res) => {
   try {
+    // Rate limiting
+    const clientIp = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket.remoteAddress || "unknown";
+    const rl = rateLimits.check(clientIp);
+    if (!rl.allowed) {
+      res.writeHead(429, {
+        "Content-Type": "application/json",
+        "Retry-After": String(rl.retryAfter),
+      });
+      return res.end(JSON.stringify({ error: "Rate limited", retryAfter: rl.retryAfter }));
+    }
+
     const { pathname, query } = parseUrl(req);
     const route = matchRoute(req.method, pathname, query);
 

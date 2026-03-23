@@ -1,16 +1,25 @@
 {
   "name": "agent-store",
-  "version": "1.0.0",
-  "description": "Lightweight persistent key-value store with HTTP API for AI agents. Namespaced storage, TTL, search, backup/restore.",
+  "version": "1.1.0",
+  "description": "Zero-dependency persistent key-value store for AI agents. HTTP API + MCP server + CLI. Namespaced storage, TTL, batch ops, rate limiting.",
   "type": "module",
-  "main": "server.mjs",
+  "main": "index.mjs",
   "bin": {
-    "agent-store": "server.mjs"
+    "agent-store": "cli.mjs"
   },
   "scripts": {
     "start": "node server.mjs",
-    "dev": "node --watch server.mjs"
+    "dev": "node --watch server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "test": "node test.mjs"
   },
-  "keywords": ["storage", "key-value", "ai-agent", "persistent", "http-api"],
-  "license": "MIT"
+  "keywords": ["storage", "key-value", "ai-agent", "persistent", "http-api", "mcp", "model-context-protocol"],
+  "license": "MIT",
+  "files": [
+    "server.mjs",
+    "mcp-server.mjs",
+    "index.mjs",
+    "cli.mjs",
+    "README.md"
+  ]
 }
