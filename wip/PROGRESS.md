@@ -143,4 +143,25 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 20:08: **Integration**: Health server `/portfolio` endpoint + dashboard `/api/portfolio`
 - 2026-03-23 20:08: **Feature**: Telegram portfolio alerts — `notifyPortfolioRebalance`, `notifyPortfolioAlert`, `notifyPortfolioSummary`
 - 2026-03-23 20:08: **Docs**: SKILL.md updated with full portfolio manager documentation
-- 2026-03-23 20:08: **Pushed**: commit a17a8d2 to feat/openclaw-skill branch (PR blocked by GitHub rate limit — retry later)
+- 2026-03-23 20:38: **Feature**: WebSocket Live Price Feed (`utils/wsPriceFeed.ts`) — real-time price via Binance WebSocket
+  - Persistent WS connection with auto-reconnect (exponential backoff + jitter)
+  - Combined ticker + trade streams (price, bid/ask, volume, change%)
+  - Stale connection detection (60s heartbeat check)
+  - Multi-asset feed manager (`MultiAssetFeed`) for tracking multiple symbols
+  - Connection stats: messages, reconnections, uptime
+  - Trade execution stream with buy/sell side detection
+- 2026-03-23 20:38: **Feature**: Smart Alert Engine (`utils/smartAlerts.ts`) — multi-condition alert system
+  - Price threshold alerts (above/below)
+  - Volume spike detection (rolling average comparison)
+  - Momentum divergence alerts (price/volume divergence detection)
+  - Funding rate extreme alerts
+  - Custom condition DSL with evaluate callback
+  - Alert deduplication with configurable cooldown
+  - Severity levels: info/warning/critical
+  - Alert history with stats
+- 2026-03-23 20:38: **New Project**: agent-store — zero-dependency persistent KV store for AI agents
+  - HTTP API with namespaced storage
+  - TTL auto-expiration, glob search, atomic ops
+  - Auto-persist to disk, web UI dashboard
+  - Backup/restore, full stats
+  - location: `/home/ubuntu/.openclaw/workspace/agent-store/`

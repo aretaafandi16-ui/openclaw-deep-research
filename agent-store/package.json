@@ -1,0 +1,16 @@
+{
+  "name": "agent-store",
+  "version": "1.0.0",
+  "description": "Lightweight persistent key-value store with HTTP API for AI agents. Namespaced storage, TTL, search, backup/restore.",
+  "type": "module",
+  "main": "server.mjs",
+  "bin": {
+    "agent-store": "server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs"
+  },
+  "keywords": ["storage", "key-value", "ai-agent", "persistent", "http-api"],
+  "license": "MIT"
+}
