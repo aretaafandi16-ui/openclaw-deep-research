@@ -56,3 +56,11 @@ Track active projects being built by skill-builder cron job.
   - API endpoints: `/api/health`, `/api/pnl`, `/api/trades`, `/api/stats`
 - 2026-03-23 15:08: **Integration**: Dashboard wired into main loop — reports buys, sells, market changes, and indicator snapshots
 - 2026-03-23 15:08: **Docs**: SKILL.md updated with dashboard endpoints and features
+- 2026-03-23 16:08: **Feature**: Risk management module (`utils/risk.ts`) — per-position stop-loss (8%), take-profit (15%), trailing stop (5%), max hold time, daily trade/loss limits, cooldown
+- 2026-03-23 16:08: **Feature**: trade_4 strategy — Bollinger Band mean reversion (buy lower BB, sell upper BB) with RSI confirmation, MACD squeeze breakout, bandwidth filter
+- 2026-03-23 16:08: **Integration**: canTrade/openPosition/closePosition wired into all buy/sell paths in trade.ts; risk exit check on every tick in decision.ts
+- 2026-03-23 16:08: **Feature**: /risk endpoint on health server + /api/risk on dashboard
+- 2026-03-23 16:08: **Feature**: Dashboard risk panel — SL/TP config, daily trades/P&L, open position card with real-time data
+- 2026-03-23 16:08: **Feature**: Telegram risk alerts — notifyRiskExit() on SL/TP/trailing triggers, notifyTradeBlocked() on risk blocks
+- 2026-03-23 16:08: **Config**: risk section added to TOML schema, trade_4 added to strategy enum
+- 2026-03-23 16:08: **Docs**: SKILL.md updated with risk management, trade_4, Telegram alerts
