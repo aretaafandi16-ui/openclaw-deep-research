@@ -1,0 +1,16 @@
+{
+  "name": "agent-pipeline",
+  "version": "1.0.0",
+  "description": "Zero-dependency pipeline orchestrator for AI agents — composable workflows with branching, retries, parallel execution",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-pipeline": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs"
+  },
+  "keywords": ["ai", "agents", "pipeline", "workflow", "orchestrator", "mcp"],
+  "license": "MIT"
+}

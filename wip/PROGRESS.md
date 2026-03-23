@@ -7,6 +7,7 @@ Track active projects being built by skill-builder cron job.
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
+| agent-pipeline | ✅ Shipped v1.0 | 2026-03-23 | Local |
 
 ## Completed Projects
 
@@ -185,3 +186,10 @@ Track active projects being built by skill-builder cron job.
   - **Rate limiting**: Per-IP configurable (300 req/min default, env-configurable)
   - **Test suite** (test.mjs): 18 tests, all passing ✅
   - **Docs**: Complete README with MCP, CLI, library, batch examples
+- 2026-03-23 22:08: **New Project**: agent-pipeline — zero-dependency pipeline orchestrator for AI agents
+  - **Core** (index.mjs): Pipeline class with composable step chains, conditional branching, parallel execution, retry with exponential backoff, error fallbacks, timeouts, middleware hooks, dependency management, event-driven progress tracking, JSON serialization
+  - **Step types**: task, transform, condition, parallel, pipeline (nested), delay, log, set, assert
+  - **MCP Server** (mcp-server.mjs): 10 tools (create, add_task, add_parallel, add_delay, add_set, run, serialize, compose, list, runs)
+  - **CLI** (cli.mjs): run from JSON, demo, validate, mcp server
+  - **Test suite** (test.mjs): 34 tests, all passing ✅
+  - **Docs**: Complete README with API reference, examples, MCP/CLI usage
