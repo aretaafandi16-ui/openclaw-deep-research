@@ -39,3 +39,6 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 13:38: **Feature**: `notifyDailyReport()` — formatted daily P&L summary via Telegram (sessions, trades, net P&L, win rate, streaks, best/worst)
 - 2026-03-23 13:38: **Feature**: `sendDailyReport()` export from pnl.ts — callable from cron/heartbeat for scheduled daily reports
 - 2026-03-23 13:38: **Cleanup**: Removed dead `trending()` comment from decision.ts, updated SKILL.md with complete feature list
+- 2026-03-23 14:08: **Feature**: Dynamic position sizer (`utils/positionSizer.ts`) — scales trade amount based on win/loss streak (+10% per win, -15% per loss), win-rate adjustment, recovery boost
+- 2026-03-23 14:08: **Feature**: Health check HTTP server (`utils/health.ts`) — GET /health (JSON), GET /stats (P&L), GET / (plain text) on port 3099
+- 2026-03-23 14:08: **Integration**: Wired position sizer into buyUpToken/buyDownToken, health server into main loop, trade recording into all buy/sell paths
