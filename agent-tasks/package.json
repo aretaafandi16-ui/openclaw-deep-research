@@ -1,0 +1,18 @@
+{
+  "name": "agent-tasks",
+  "version": "1.0.0",
+  "description": "Zero-dependency persistent task queue & scheduler for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-tasks": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "demo": "node cli.mjs demo",
+    "serve": "node cli.mjs serve",
+    "mcp": "node cli.mjs mcp"
+  },
+  "keywords": ["ai", "agents", "task-queue", "scheduler", "mcp", "orchestration"],
+  "license": "MIT"
+}
