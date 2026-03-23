@@ -64,3 +64,9 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 16:08: **Feature**: Telegram risk alerts — notifyRiskExit() on SL/TP/trailing triggers, notifyTradeBlocked() on risk blocks
 - 2026-03-23 16:08: **Config**: risk section added to TOML schema, trade_4 added to strategy enum
 - 2026-03-23 16:08: **Docs**: SKILL.md updated with risk management, trade_4, Telegram alerts
+- 2026-03-23 17:08: **Feature**: Market regime detector (`utils/regime.ts`) — classifies market as trending_up/down, mean_reverting, volatile_breakout, neutral using ADX(14), ATR, Bollinger Band width ratio, lag-1 autocorrelation, linear regression slope, SMA alignment. Confidence-scored composite voting system.
+- 2026-03-23 17:08: **Feature**: Adaptive strategy switcher (`utils/adaptiveSwitcher.ts`) — auto-selects optimal strategy per regime: trade_3 for trending, trade_4 for mean-reverting, trade_2 for breakouts, trade_1 for neutral. Configurable confidence threshold (50%), cooldown (5min), regime→strategy mappings. Switch history logging (JSONL).
+- 2026-03-23 17:08: **Integration**: Regime detection + adaptive switch wired into `make_trading_decision()` — runs on every tick, auto-switches strategy when regime changes confidently.
+- 2026-03-23 17:08: **Feature**: Dashboard regime panel + `/api/regime` endpoint. Health server `/regime` endpoint.
+- 2026-03-23 17:08: **Feature**: Telegram `notifyRegimeChange()` — real-time alerts on regime shifts.
+- 2026-03-23 17:08: **Docs**: SKILL.md updated with regime detection, adaptive switching, new endpoints.
