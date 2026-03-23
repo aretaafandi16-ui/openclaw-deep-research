@@ -1,0 +1,20 @@
+{
+  "name": "solana-token-analyzer",
+  "version": "1.0.0",
+  "description": "Lightweight Solana token analyzer for AI agents — holder distribution, liquidity metrics, risk signals",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": ["solana", "token", "analyzer", "ai-agent", "defi", "crypto"],
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "tsx": "^4.19.0"
+  }
+}
