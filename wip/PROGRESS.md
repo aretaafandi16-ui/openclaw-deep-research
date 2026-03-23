@@ -85,3 +85,25 @@ Track active projects being built by skill-builder cron job.
   - Configurable risk params via CLI flags
   - Help text and usage examples
 - 2026-03-23 17:38: **Docs**: SKILL.md updated with backtesting section — CLI usage, CSV format, metrics, programmatic API
+- 2026-03-23 18:08: **Feature**: Paper Trading Engine (`utils/paperTrader.ts`) — simulated live trading with virtual balances
+  - Virtual USD balance with configurable starting capital
+  - Realistic slippage simulation (configurable basis points)
+  - Bid-ask spread modeling with volatile-move widening
+  - Simulated execution latency (10-50ms)
+  - Per-session + cumulative P&L tracking, max drawdown, Sharpe ratio, profit factor
+  - JSONL trade/session logs for analysis
+- 2026-03-23 18:08: **Feature**: Paper Trading CLI (`cli/paper-trading.ts`) — command-line interface
+  - Multi-strategy simulation across market scenarios (sideways/bullish/bearish/volatile/random)
+  - Configurable capital, slippage, spread, cycles
+  - Automatic strategy rotation for comparison
+  - Built-in strategy decision simulation for all 4 strategies
+- 2026-03-23 18:08: **Feature**: Strategy Performance Analyzer (`utils/strategyAnalyzer.ts`) — auto-ranks strategies
+  - Per-strategy metrics: win rate, Sharpe, profit factor, max DD
+  - Rolling window analysis with trend detection (improving/stable/degrading)
+  - Confidence-weighted composite scoring (60% recent + 40% historical)
+  - Automatic recommendation: strong_buy / buy / hold / reduce / avoid
+  - Decay detection alerts (high/medium/low severity)
+  - JSONL persistence for cross-session analysis
+- 2026-03-23 18:08: **Integration**: Paper trading + strategy API endpoints on health server (`/paper`, `/strategies`) and dashboard (`/api/paper`, `/api/strategies`)
+- 2026-03-23 18:08: **Integration**: Dashboard panels — Paper Trading (capital, P&L, Sharpe, win rate) and Strategy Rankings (recommended, confidence, decay alerts, ranked table)
+- 2026-03-23 18:08: **Docs**: SKILL.md updated with paper trading and strategy analyzer sections
