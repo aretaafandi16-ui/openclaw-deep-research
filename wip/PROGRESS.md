@@ -24,4 +24,5 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 09:26: TradingAgents Pydantic PR #436 created
 - 2026-03-23 10:18: Beacon Atlas day/night cycle pushed
 - 2026-03-23 10:55: Polymarket SKILL.md pushed
+- 2026-03-23 11:38: Polymarket fix: recordTrade() wiring + persistent JSONL trade log (commit 79e15dd)
 - 2026-03-23 11:08: Polymarket graceful shutdown + session summary pushed (commit 6143b0b)
