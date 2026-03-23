@@ -165,3 +165,11 @@ Track active projects being built by skill-builder cron job.
   - Auto-persist to disk, web UI dashboard
   - Backup/restore, full stats
   - location: `/home/ubuntu/.openclaw/workspace/agent-store/`
+- 2026-03-23 21:08: **Feature**: agent-store v1.1 — major upgrade (commit 4730428)
+  - **Library API** (index.mjs): AgentStore class for programmatic import
+  - **MCP Server** (mcp-server.mjs): 9 tools via Model Context Protocol (get/set/delete/search/list/mget/mset/backup/stats)
+  - **CLI** (cli.mjs): Full command-line interface — get, set, delete, search, list, stats, backup, restore, serve, mcp
+  - **Batch operations**: HTTP endpoints _mget, _mset, _mdelete
+  - **Rate limiting**: Per-IP configurable (300 req/min default, env-configurable)
+  - **Test suite** (test.mjs): 18 tests, all passing ✅
+  - **Docs**: Complete README with MCP, CLI, library, batch examples
