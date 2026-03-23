@@ -8,6 +8,7 @@ Track active projects being built by skill-builder cron job.
 |---------|--------|-------------|-------------|
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
 | agent-pipeline | ✅ Shipped v1.0 | 2026-03-23 | Local |
+| tool-bridge | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -193,3 +194,19 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): run from JSON, demo, validate, mcp server
   - **Test suite** (test.mjs): 34 tests, all passing ✅
   - **Docs**: Complete README with API reference, examples, MCP/CLI usage
+
+- 2026-03-23 22:38: **New Project**: tool-bridge — universal REST/CLI → MCP tool bridge via YAML config
+  - REST API tools: GET/POST/PUT/DELETE with auth, headers, query params, body
+  - CLI tools: wrap any command with template args
+  - YAML + JSON config (built-in zero-dep parser)
+  - Template engine: `{{args.*}}`, `{{env.*}}`, `{{date.*}}`, `{{uuid}}`, `{{response.*}}`
+  - Response transforms via JSONPath extraction
+  - Per-tool rate limiting with sliding window
+  - TTL-based response caching
+  - Batch operations with chained responses
+  - 4 built-in presets: github, weather, httpbin, system (18 tools)
+  - MCP server: 5 meta-tools (bridge_list/call/batch/info/reload) + auto-exposed user tools (tb_*)
+  - Full CLI: list, call, info, validate, serve, presets
+  - Example config with 16 tools: weather, HTTP, system, git, GitHub, CoinGecko, news, file ops
+  - 49 tests, all passing ✅
+  - Committed as 1bddf23, pushed to GitHub master
