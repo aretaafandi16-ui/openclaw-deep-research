@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "coinfello": {
+      "version": "0.3.1",
+      "installedAt": 1774190014649
+    },
+    "privy": {
+      "version": "1.0.1",
+      "installedAt": 1774190015024
+    }
+  }
+}

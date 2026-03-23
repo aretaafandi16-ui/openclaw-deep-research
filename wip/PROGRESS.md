@@ -42,3 +42,8 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 14:08: **Feature**: Dynamic position sizer (`utils/positionSizer.ts`) — scales trade amount based on win/loss streak (+10% per win, -15% per loss), win-rate adjustment, recovery boost
 - 2026-03-23 14:08: **Feature**: Health check HTTP server (`utils/health.ts`) — GET /health (JSON), GET /stats (P&L), GET / (plain text) on port 3099
 - 2026-03-23 14:08: **Integration**: Wired position sizer into buyUpToken/buyDownToken, health server into main loop, trade recording into all buy/sell paths
+- 2026-03-23 14:38: **Feature**: Technical indicators module (`utils/indicators.ts`) — RSI(14), SMA, EMA, Bollinger Bands, MACD, VWAP with composite signal scoring
+- 2026-03-23 14:38: **Feature**: trade_3 strategy — indicator-driven entry/exit using composite score
+  - Entry: strong signals (>60), RSI bounce with MACD confirmation, Bollinger squeeze breakout, SMA crossover
+  - Exit: signal reversal, RSI extremes (>75/<25), Bollinger band edges (>0.95/<0.05), time decay (>85%)
+- 2026-03-23 14:38: **Integration**: PriceHistory buffers in Trade class, indicator snapshot on each tick, SKILL.md updated
