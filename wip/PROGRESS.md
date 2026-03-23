@@ -9,6 +9,7 @@ Track active projects being built by skill-builder cron job.
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
 | agent-pipeline | ✅ Shipped v1.0 | 2026-03-23 | Local |
 | tool-bridge | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-cost | ✅ Shipped v1.0 | 2026-03-23 | Local (pushed) |
 
 ## Completed Projects
 
@@ -210,3 +211,18 @@ Track active projects being built by skill-builder cron job.
   - Example config with 16 tools: weather, HTTP, system, git, GitHub, CoinGecko, news, file ops
   - 49 tests, all passing ✅
   - Committed as 1bddf23, pushed to GitHub master
+
+- 2026-03-23 23:08: **New Project**: agent-cost — zero-dep AI cost tracker for agents
+  - Core: CostTracker class with token usage recording and automatic cost calculation
+  - 9 providers, 40+ models with up-to-date pricing (OpenAI, Anthropic, Google, Mistral, Groq, DeepSeek, xAI, Cohere)
+  - Budget management: daily/weekly/monthly limits with soft warnings + hard limits
+  - Cost estimation without recording, cheapest model finder
+  - Usage statistics by provider, model, and time period (day/week/month)
+  - Custom pricing support for negotiated rates
+  - HTTP server with dashboard UI (port 3100) and full REST API
+  - MCP server with 10 tools (cost_record, cost_estimate, cost_cheapest, cost_stats, cost_budgets, cost_set_budget, cost_recent, cost_models, cost_export, cost_clear)
+  - CLI with 12 commands (record, estimate, cheapest, stats, budgets, budget, recent, models, export, clear, serve, mcp, demo)
+  - CSV export, JSONL persistence, EventEmitter integration
+  - Budget warning events at 50/75/90/95/100% thresholds
+  - 73 tests, all passing ✅
+  - Committed as b993bca, pushed to GitHub master
