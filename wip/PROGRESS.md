@@ -35,3 +35,7 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 13:08: **Feature**: P&L tracker module (utils/pnl.ts) — realized P&L per session, cumulative stats (win rate, streaks, max win/loss), JSONL persistence, max-loss circuit breaker
 - 2026-03-23 13:08: **Feature**: Price momentum alert — Telegram notification when price moves >10% in a single tick
 - 2026-03-23 13:08: **Bugfix**: `hasBought` flag reset between market cycles (was stuck `true` after first buy, preventing re-entry in new markets)
+- 2026-03-23 13:38: **Bugfix**: `hasBought` reset was too aggressive — was resetting in index.ts cycle loop, now only resets after successful sell. Bot can now re-enter positions within same market cycle.
+- 2026-03-23 13:38: **Feature**: `notifyDailyReport()` — formatted daily P&L summary via Telegram (sessions, trades, net P&L, win rate, streaks, best/worst)
+- 2026-03-23 13:38: **Feature**: `sendDailyReport()` export from pnl.ts — callable from cron/heartbeat for scheduled daily reports
+- 2026-03-23 13:38: **Cleanup**: Removed dead `trending()` comment from decision.ts, updated SKILL.md with complete feature list
