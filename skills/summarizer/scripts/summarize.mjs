@@ -1,17 +1,59 @@
 #!/usr/bin/env node
 /**
- * summarize.mjs — URL/text summarizer utility
- * Fetches URLs, extracts readable text, or reads from stdin.
+ * summarize.mjs — URL/text/PDF summarizer utility
+ * Fetches URLs, extracts readable text, reads from stdin, or parses PDFs.
  * Outputs clean markdown suitable for LLM summarization or direct use.
  *
- * v0.2: batch mode, disk cache
+ * v0.4: PDF support (local files + URLs)
  */
 
 import { readFile, writeFile, mkdir, stat, unlink } from 'node:fs/promises';
 import { createInterface } from 'node:readline';
-import { join } from 'node:path';
+import { join, extname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
+
+// Lazy-load pdf2json only when needed
+let _PDFParser = null;
+async function getPdfParser() {
+  if (!_PDFParser) {
+    const mod = await import('pdf2json');
+    _PDFParser = mod.default || mod;
+  }
+  return _PDFParser;
+}
+
+function isPdfPath(p) {
+  return /\.pdf$/i.test(p);
+}
+
+async function extractPdfText(buffer) {
+  const PDFParser = await getPdfParser();
+  // Suppress pdf2json worker warning
+  const origWarn = console.warn;
+  console.warn = () => {};
+  try {
+    return await new Promise((resolve, reject) => {
+      const parser = new PDFParser();
+      parser.on('pdfParser_dataReady', (data) => {
+        const text = (data.Pages || []).map(p =>
+          (p.Texts || []).map(t => decodeURIComponent(t.R[0].T)).join(' ')
+        ).join('\n\n');
+        resolve({
+          text,
+          pages: data.Pages?.length || 0,
+          info: data.Meta?.Metadata || {},
+        });
+      });
+      parser.on('pdfParser_dataError', (err) => {
+        reject(new Error(err.parserError || 'PDF parsing failed'));
+      });
+      parser.parseBuffer(buffer);
+    });
+  } finally {
+    console.warn = origWarn;
+  }
+}
 
 // --- Arg parsing ---
 const args = process.argv.slice(2);
@@ -41,7 +83,7 @@ for (let i = 0; i < args.length; i++) {
   else if (a === '--score') { showScore = true; }
   else if (a === '--no-score') { showScore = false; }
   else if (a === '--help' || a === '-h') {
-    console.log(`Usage: summarize.mjs [URL] [options]
+    console.log(`Usage: summarize.mjs [URL|file.pdf] [options]
 
 Options:
   --format <bullets|paragraph|outline>  Output format (default: bullets)
@@ -55,7 +97,12 @@ Options:
   --score                               Show content quality score (default: on)
   --no-score                            Hide quality score
   --output <file>                       Write to file instead of stdout
-  -h, --help                            Show this help`);
+  -h, --help                            Show this help
+
+PDF Support:
+  summarize.mjs document.pdf             Extract text from local PDF
+  summarize.mjs https://x.com/file.pdf   Download and extract PDF
+  summarize.mjs --batch urls.txt         Mix of URLs and PDF paths supported`);
     process.exit(0);
   }
   else if (!a.startsWith('-')) { url = a; }
@@ -79,9 +126,9 @@ async function fetchUrl(targetUrl) {
     const res = await fetch(targetUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; SummarizerBot/1.0)',
-        'Accept': 'text/html,application/xhtml+xml,text/plain',
+        'Accept': 'text/html,application/xhtml+xml,text/plain,application/pdf',
       },
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(30000),
     });
 
     if (!res.ok) {
@@ -89,8 +136,18 @@ async function fetchUrl(targetUrl) {
     }
 
     const contentType = res.headers.get('content-type') || '';
-    const raw = await res.text();
+    const isPdf = contentType.includes('pdf') || targetUrl.toLowerCase().endsWith('.pdf');
 
+    if (isPdf) {
+      const buf = Buffer.from(await res.arrayBuffer());
+      const pdf = await extractPdfText(buf);
+      const meta = { title: pdf.info?.Title || '', pages: pdf.pages };
+      const result = { text: pdf.text, contentType: 'application/pdf', status: res.status, url: targetUrl, pdfMeta: meta };
+      await cacheSet(targetUrl, result);
+      return result;
+    }
+
+    const raw = await res.text();
     let text = raw;
     if (contentType.includes('html') || contentType.includes('xml')) {
       text = extractFromHtml(raw);
@@ -377,17 +434,26 @@ async function main() {
     // Check if it's a file path
     if (!url.startsWith('http')) {
       try {
-        text = await readFile(url, 'utf-8');
-        meta.source = `file:${url}`;
-      } catch {
-        url = url.startsWith('http') ? url : `https://${url}`;
-        const result = await fetchUrl(url);
+        // PDF file detection
+        if (url.toLowerCase().endsWith('.pdf')) {
+          const buf = await readFile(url);
+          const pdf = await extractPdfText(buf);
+          text = pdf.text;
+          meta = { source: `file:${url}`, contentType: 'application/pdf', pages: pdf.pages, title: pdf.info?.Title || '' };
+        } else {
+          text = await readFile(url, 'utf-8');
+          meta.source = `file:${url}`;
+        }
+      } catch (e) {
+        // Not a local file, try as URL
+        const tryUrl = url.startsWith('http') ? url : `https://${url}`;
+        const result = await fetchUrl(tryUrl);
         if (result.error) {
-          console.error(`Error fetching ${url}: ${result.error}`);
+          console.error(`Error: ${e.message || result.error}`);
           process.exit(1);
         }
         text = result.text;
-        meta = { source: result.url, contentType: result.contentType, status: result.status, cached: result._cached };
+        meta = { source: result.url, contentType: result.contentType, status: result.status, cached: result._cached, pages: result.pdfMeta?.pages, title: result.pdfMeta?.title };
       }
     } else {
       const result = await fetchUrl(url);
@@ -396,7 +462,7 @@ async function main() {
         process.exit(1);
       }
       text = result.text;
-      meta = { source: result.url, contentType: result.contentType, status: result.status, cached: result._cached };
+      meta = { source: result.url, contentType: result.contentType, status: result.status, cached: result._cached, pages: result.pdfMeta?.pages, title: result.pdfMeta?.title };
     }
   } else {
     console.error('No URL or stdin provided. Use --help for usage.');
@@ -416,6 +482,8 @@ async function main() {
     '',
     meta.source ? `**Source:** ${meta.source}` : null,
     meta.contentType ? `**Type:** ${meta.contentType}` : null,
+    meta.title ? `**Title:** ${meta.title}` : null,
+    meta.pages ? `**Pages:** ${meta.pages}` : null,
     `**Length:** ${text.length} chars`,
     meta.cached ? `**Cache:** hit ✓` : null,
     analysis ? `**Metrics:** ${formatScore(analysis)}` : null,
