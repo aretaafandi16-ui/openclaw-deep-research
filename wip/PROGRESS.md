@@ -69,4 +69,19 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 17:08: **Integration**: Regime detection + adaptive switch wired into `make_trading_decision()` — runs on every tick, auto-switches strategy when regime changes confidently.
 - 2026-03-23 17:08: **Feature**: Dashboard regime panel + `/api/regime` endpoint. Health server `/regime` endpoint.
 - 2026-03-23 17:08: **Feature**: Telegram `notifyRegimeChange()` — real-time alerts on regime shifts.
-- 2026-03-23 17:08: **Docs**: SKILL.md updated with regime detection, adaptive switching, new endpoints.
+- 2026-03-23 17:38: **Feature**: Backtesting engine (`utils/backtest.ts`) — full simulation of all 4 strategies against historical/synthetic data
+  - Tick-by-tick strategy replay with simulated buy/sell execution
+  - Risk management simulation (stop-loss, take-profit, trailing stop)
+  - Technical indicator computation on simulated data (RSI, BB, MACD, SMA)
+  - Synthetic price data generator with configurable bias, volatility, seed
+  - CSV import/export for real historical data
+  - JSON export for programmatic analysis
+  - Strategy comparison report: ROI, Sharpe, Profit Factor, Max Drawdown, Win Rate
+  - Works across market conditions (bullish/bearish/neutral)
+- 2026-03-23 17:38: **Feature**: Backtest CLI (`cli/backtest.ts`) — command-line interface for running backtests
+  - `--compare` mode: run all strategies, show side-by-side comparison
+  - `--csv` mode: load real historical price data
+  - `--export-json` / `--export-csv` for results/equity curves
+  - Configurable risk params via CLI flags
+  - Help text and usage examples
+- 2026-03-23 17:38: **Docs**: SKILL.md updated with backtesting section — CLI usage, CSV format, metrics, programmatic API
