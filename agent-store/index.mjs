@@ -13,9 +13,11 @@
 import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { EventEmitter } from "node:events";
 
-export class AgentStore {
+export class AgentStore extends EventEmitter {
   constructor(opts = {}) {
+    super();
     this.dataDir = opts.dataDir || join(process.env.HOME || "/tmp", ".agent-store");
     this.autoSaveMs = opts.autoSaveMs || 5000;
     this.maxValueSize = opts.maxValueSize || 1024 * 1024;
@@ -100,15 +102,20 @@ export class AgentStore {
 
     entries.set(key, entry);
     this._scheduleSave();
+    this.emit("change", { type: "set", namespace, key, value: structuredClone(value), entry: { ...entry, value: undefined }, oldValue: existing ? structuredClone(existing.value) : undefined });
     return { ok: true, updatedAt: now };
   }
 
   async delete(namespace, key) {
     this.stats.totalDeletes++;
     const entries = this._getNs(namespace);
+    const existing = entries.get(key);
     const existed = entries.delete(key);
     if (entries.size === 0) this.store.delete(namespace);
     this._scheduleSave();
+    if (existed) {
+      this.emit("change", { type: "delete", namespace, key, oldValue: existing ? structuredClone(existing.value) : undefined });
+    }
     return existed;
   }
 
@@ -120,6 +127,96 @@ export class AgentStore {
     entry.updatedAt = new Date().toISOString();
     this._scheduleSave();
     return true;
+  }
+
+  // ── Atomic Counters ─────────────────────────────────────────────
+
+  async incr(namespace, key, amount = 1) {
+    this.stats.totalSets++;
+    const entries = this._getNs(namespace);
+    const now = new Date().toISOString();
+    const existing = entries.get(key);
+    const currentVal = existing && (!existing.expiresAt || Date.now() <= existing.expiresAt) ? existing.value : 0;
+    const newVal = (typeof currentVal === "number" ? currentVal : 0) + amount;
+    const entry = {
+      value: newVal,
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+      expiresAt: existing?.expiresAt || null,
+    };
+    entries.set(key, entry);
+    this._scheduleSave();
+    this.emit("change", { type: "counter", namespace, key, value: newVal, delta: amount, oldValue: currentVal });
+    return newVal;
+  }
+
+  async decr(namespace, key, amount = 1) {
+    return this.incr(namespace, key, -amount);
+  }
+
+  // ── List Operations ─────────────────────────────────────────────
+
+  async lpush(namespace, key, ...values) {
+    const existing = await this.get(namespace, key);
+    const arr = Array.isArray(existing) ? existing : [];
+    arr.unshift(...values);
+    await this.set(namespace, key, arr);
+    return arr.length;
+  }
+
+  async lpop(namespace, key) {
+    const existing = await this.get(namespace, key);
+    if (!Array.isArray(existing) || existing.length === 0) return undefined;
+    const val = existing.shift();
+    await this.set(namespace, key, existing);
+    return val;
+  }
+
+  async lrange(namespace, key, start = 0, end = -1) {
+    const existing = await this.get(namespace, key);
+    if (!Array.isArray(existing)) return [];
+    const realEnd = end < 0 ? existing.length + end + 1 : end + 1;
+    return existing.slice(start, realEnd);
+  }
+
+  async llen(namespace, key) {
+    const existing = await this.get(namespace, key);
+    return Array.isArray(existing) ? existing.length : 0;
+  }
+
+  // ── Set Operations ──────────────────────────────────────────────
+
+  async sadd(namespace, key, ...members) {
+    const existing = await this.get(namespace, key);
+    const set = new Set(Array.isArray(existing) ? existing : []);
+    let added = 0;
+    for (const m of members) {
+      if (!set.has(m)) { set.add(m); added++; }
+    }
+    await this.set(namespace, key, [...set]);
+    return added;
+  }
+
+  async srem(namespace, key, ...members) {
+    const existing = await this.get(namespace, key);
+    if (!Array.isArray(existing)) return 0;
+    const set = new Set(existing);
+    let removed = 0;
+    for (const m of members) {
+      if (set.delete(m)) removed++;
+    }
+    await this.set(namespace, key, [...set]);
+    return removed;
+  }
+
+  async smembers(namespace, key) {
+    const existing = await this.get(namespace, key);
+    return Array.isArray(existing) ? existing : [];
+  }
+
+  async sismember(namespace, key, member) {
+    const existing = await this.get(namespace, key);
+    return Array.isArray(existing) ? existing.includes(member) : false;
   }
 
   // ── Batch Operations ────────────────────────────────────────────

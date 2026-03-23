@@ -180,6 +180,124 @@ const tools = {
       return store.getStats();
     },
   },
+
+  store_incr: {
+    description: "Atomically increment a numeric counter by an amount (default 1)",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string", description: "Storage namespace" },
+        key: { type: "string", description: "Counter key" },
+        amount: { type: "number", description: "Amount to add (default: 1)" },
+      },
+      required: ["namespace", "key"],
+    },
+    handler: async ({ namespace, key, amount = 1 }) => {
+      const value = await store.incr(namespace, key, amount);
+      return { namespace, key, value, delta: amount };
+    },
+  },
+
+  store_decr: {
+    description: "Atomically decrement a numeric counter by an amount (default 1)",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string", description: "Storage namespace" },
+        key: { type: "string", description: "Counter key" },
+        amount: { type: "number", description: "Amount to subtract (default: 1)" },
+      },
+      required: ["namespace", "key"],
+    },
+    handler: async ({ namespace, key, amount = 1 }) => {
+      const value = await store.decr(namespace, key, amount);
+      return { namespace, key, value, delta: -amount };
+    },
+  },
+
+  store_lpush: {
+    description: "Push values to the front of a list",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string" },
+        key: { type: "string" },
+        values: { type: "array", description: "Values to push" },
+      },
+      required: ["namespace", "key", "values"],
+    },
+    handler: async ({ namespace, key, values }) => {
+      const len = await store.lpush(namespace, key, ...values);
+      return { namespace, key, length: len };
+    },
+  },
+
+  store_lpop: {
+    description: "Pop a value from the front of a list",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string" },
+        key: { type: "string" },
+      },
+      required: ["namespace", "key"],
+    },
+    handler: async ({ namespace, key }) => {
+      const value = await store.lpop(namespace, key);
+      return { namespace, key, value, found: value !== undefined };
+    },
+  },
+
+  store_lrange: {
+    description: "Get a range of values from a list",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string" },
+        key: { type: "string" },
+        start: { type: "number", description: "Start index (default: 0)" },
+        end: { type: "number", description: "End index (default: -1 = end)" },
+      },
+      required: ["namespace", "key"],
+    },
+    handler: async ({ namespace, key, start = 0, end = -1 }) => {
+      const values = await store.lrange(namespace, key, start, end);
+      return { namespace, key, values, count: values.length };
+    },
+  },
+
+  store_sadd: {
+    description: "Add members to a set (no duplicates)",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string" },
+        key: { type: "string" },
+        members: { type: "array", description: "Members to add" },
+      },
+      required: ["namespace", "key", "members"],
+    },
+    handler: async ({ namespace, key, members }) => {
+      const added = await store.sadd(namespace, key, ...members);
+      return { namespace, key, added };
+    },
+  },
+
+  store_smembers: {
+    description: "Get all members of a set",
+    inputSchema: {
+      type: "object",
+      properties: {
+        namespace: { type: "string" },
+        key: { type: "string" },
+      },
+      required: ["namespace", "key"],
+    },
+    handler: async ({ namespace, key }) => {
+      const members = await store.smembers(namespace, key);
+      return { namespace, key, members, count: members.length };
+    },
+  },
 };
 
 // ── MCP JSON-RPC Protocol ─────────────────────────────────────────
@@ -194,7 +312,7 @@ async function handleRequest(req) {
       result: {
         protocolVersion: "2024-11-05",
         capabilities: { tools: {} },
-        serverInfo: { name: "agent-store", version: "1.0.0" },
+        serverInfo: { name: "agent-store", version: "1.1.0" },
       },
     };
   }

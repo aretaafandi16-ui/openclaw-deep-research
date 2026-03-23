@@ -114,6 +114,63 @@ async function main() {
   assert(st.totalSets > 0, "stats tracks sets");
   assert(st.totalDeletes > 0, "stats tracks deletes");
 
+  // ── Counters ────────────────────────────────────────────────
+  console.log("Counters:");
+  await store.set("counters", "score", 100);
+  const v1 = await store.incr("counters", "score", 10);
+  assert(v1 === 110, "incr adds amount (100+10=110)");
+  const v2 = await store.decr("counters", "score", 5);
+  assert(v2 === 105, "decr subtracts amount (110-5=105)");
+  const v3 = await store.incr("counters", "new_counter");
+  assert(v3 === 1, "incr on missing key creates with amount");
+  const v4 = await store.incr("counters", "new_counter");
+  assert(v4 === 2, "incr on existing counter increments");
+
+  // ── List Operations ─────────────────────────────────────────
+  console.log("List Operations:");
+  const len1 = await store.lpush("lists", "queue", "a", "b", "c");
+  assert(len1 === 3, "lpush returns length 3");
+  const popped = await store.lpop("lists", "queue");
+  assert(popped === "a", "lpop returns first element");
+  const len2 = await store.llen("lists", "queue");
+  assert(len2 === 2, "llen returns remaining length");
+  const range = await store.lrange("lists", "queue", 0, 1);
+  assert(range.length === 2, "lrange returns correct slice");
+  assert(range[0] === "b", "lrange[0] is correct");
+
+  // ── Set Operations ──────────────────────────────────────────
+  console.log("Set Operations:");
+  const added1 = await store.sadd("sets", "tags", "node", "python", "rust");
+  assert(added1 === 3, "sadd adds 3 members");
+  const added2 = await store.sadd("sets", "tags", "node", "go");
+  assert(added2 === 1, "sadd with dupes only adds new");
+  const isMem = await store.sismember("sets", "tags", "rust");
+  assert(isMem === true, "sismember finds existing member");
+  const isMem2 = await store.sismember("sets", "tags", "java");
+  assert(isMem2 === false, "sismember rejects missing member");
+  const members = await store.smembers("sets", "tags");
+  assert(members.length === 4, "smembers returns all 4 members");
+
+  // ── Events ──────────────────────────────────────────────────
+  console.log("Events:");
+  let eventFired = false;
+  store.on("change", (evt) => {
+    if (evt.type === "set" && evt.namespace === "evt" && evt.key === "test") {
+      eventFired = true;
+    }
+  });
+  await store.set("evt", "test", { foo: "bar" });
+  assert(eventFired, "set emits 'change' event");
+
+  let deleteFired = false;
+  store.on("change", (evt) => {
+    if (evt.type === "delete" && evt.namespace === "evt" && evt.key === "test") {
+      deleteFired = true;
+    }
+  });
+  await store.delete("evt", "test");
+  assert(deleteFired, "delete emits 'change' event");
+
   // ── Cleanup ─────────────────────────────────────────────────
   await store.destroy();
   await rm(TEST_DIR, { recursive: true, force: true });

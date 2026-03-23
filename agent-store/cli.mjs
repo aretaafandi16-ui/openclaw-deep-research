@@ -90,6 +90,77 @@ async function main() {
       break;
     }
 
+    case "incr":
+    case "decr": {
+      if (args.length < 2) { console.error(`Usage: agent-store ${cmd} <namespace> <key> [amount]`); process.exit(1); }
+      const amount = args[2] ? parseFloat(args[2]) : 1;
+      const data = await api("POST", `/ns/${encodeURIComponent(args[0])}/${encodeURIComponent(args[1])}/_${cmd}`, { amount });
+      console.log(data.value);
+      break;
+    }
+
+    case "lpush": {
+      if (args.length < 3) { console.error("Usage: agent-store lpush <namespace> <key> <value1> [value2...]"); process.exit(1); }
+      const values = args.slice(2).map(v => JSON.parse(v));
+      const data = await api("POST", `/ns/${encodeURIComponent(args[0])}/${encodeURIComponent(args[1])}/_lpush`, { values });
+      console.log(JSON.stringify(data));
+      break;
+    }
+
+    case "lpop": {
+      if (args.length < 2) { console.error("Usage: agent-store lpop <namespace> <key>"); process.exit(1); }
+      const data = await api("POST", `/ns/${encodeURIComponent(args[0])}/${encodeURIComponent(args[1])}/_lpop`);
+      console.log(data.found ? JSON.stringify(data.value, null, 2) : "null");
+      break;
+    }
+
+    case "lrange": {
+      if (args.length < 2) { console.error("Usage: agent-store lrange <namespace> <key> [start] [end]"); process.exit(1); }
+      const start = args[2] ? parseInt(args[2]) : 0;
+      const end = args[3] ? parseInt(args[3]) : -1;
+      const data = await api("POST", `/ns/${encodeURIComponent(args[0])}/${encodeURIComponent(args[1])}/_lrange`, { start, end });
+      console.log(JSON.stringify(data.values, null, 2));
+      break;
+    }
+
+    case "sadd": {
+      if (args.length < 3) { console.error("Usage: agent-store sadd <namespace> <key> <member1> [member2...]"); process.exit(1); }
+      const members = args.slice(2).map(v => JSON.parse(v));
+      const data = await api("POST", `/ns/${encodeURIComponent(args[0])}/${encodeURIComponent(args[1])}/_sadd`, { members });
+      console.log(JSON.stringify(data));
+      break;
+    }
+
+    case "smembers": {
+      if (args.length < 2) { console.error("Usage: agent-store smembers <namespace> <key>"); process.exit(1); }
+      const data = await api("POST", `/ns/${encodeURIComponent(args[0])}/${encodeURIComponent(args[1])}/_smembers`);
+      console.log(JSON.stringify(data.members, null, 2));
+      break;
+    }
+
+    case "watch": {
+      if (args.length < 1) { console.error("Usage: agent-store watch <namespace> [key]"); process.exit(1); }
+      const ns = args[0];
+      const key = args[1] || "";
+      const url = `${HOST}/ns/${encodeURIComponent(ns)}/_watch${key ? `?key=${encodeURIComponent(key)}` : ""}`;
+      console.log(`Watching ${ns}${key ? `:${key}` : ":*"} ...`);
+      // Use fetch with streaming
+      const res = await fetch(url);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const text = decoder.decode(value);
+        for (const line of text.split("\n")) {
+          if (line.startsWith("data: ")) {
+            console.log(JSON.parse(line.slice(6)));
+          }
+        }
+      }
+      break;
+    }
+
     case "stats": {
       const data = await api("GET", "/stats");
       console.log(JSON.stringify(data, null, 2));

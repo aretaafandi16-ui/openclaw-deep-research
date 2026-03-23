@@ -38,6 +38,12 @@ import { readFile, writeFile, mkdir, readdir, stat, unlink } from "node:fs/promi
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
+import { EventEmitter } from "node:events";
+
+// ── Event bus for SSE watchers ─────────────────────────────────────
+
+const eventBus = new EventEmitter();
+eventBus.setMaxListeners(0); // unlimited for SSE clients
 
 // ── Configuration ───────────────────────────────────────────────────
 
@@ -334,6 +340,8 @@ const routes = {
 
     entries.set(params.key, entry);
     scheduleSave();
+    eventBus.emit(`${params.namespace}:${params.key}`, { type: "set", namespace: params.namespace, key: params.key, value: structuredClone(body) });
+    eventBus.emit(`${params.namespace}:*`, { type: "set", namespace: params.namespace, key: params.key });
 
     return { ok: true, key: params.key, updatedAt: now };
   },
@@ -345,6 +353,10 @@ const routes = {
     const existed = entries.delete(params.key);
     if (entries.size === 0) store.delete(params.namespace);
     scheduleSave();
+    if (existed) {
+      eventBus.emit(`${params.namespace}:${params.key}`, { type: "delete", namespace: params.namespace, key: params.key });
+      eventBus.emit(`${params.namespace}:*`, { type: "delete", namespace: params.namespace, key: params.key });
+    }
     return { ok: true, key: params.key, existed };
   },
 
@@ -504,11 +516,133 @@ const routes = {
     let deleted = 0;
     for (const key of keys) {
       stats.totalDeletes++;
-      if (entries.delete(key)) deleted++;
+      if (entries.delete(key)) {
+        deleted++;
+        eventBus.emit(`${params.namespace}:${key}`, { type: "delete", namespace: params.namespace, key });
+        eventBus.emit(`${params.namespace}:*`, { type: "delete", namespace: params.namespace, key });
+      }
     }
     if (entries.size === 0) store.delete(params.namespace);
     scheduleSave();
     return { namespace: params.namespace, deleted, total: keys.length };
+  },
+
+  // Atomic increment — POST /ns/:namespace/:key/_incr  body = { amount?: number }
+  "POST /ns/:namespace/:key/_incr": async (params, req) => {
+    const body = await readBody(req);
+    const amount = typeof body.amount === "number" ? body.amount : 1;
+    const entries = getNamespace(params.namespace);
+    const now = new Date().toISOString();
+    const existing = entries.get(params.key);
+    const currentVal = existing && (!existing.expiresAt || Date.now() <= existing.expiresAt) ? existing.value : 0;
+    const newVal = (typeof currentVal === "number" ? currentVal : 0) + amount;
+    const entry = {
+      value: newVal,
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+      expiresAt: existing?.expiresAt || null,
+    };
+    entries.set(params.key, entry);
+    scheduleSave();
+    stats.totalSets++;
+    eventBus.emit(`${params.namespace}:${params.key}`, { type: "counter", namespace: params.namespace, key: params.key, value: newVal, delta: amount });
+    eventBus.emit(`${params.namespace}:*`, { type: "counter", namespace: params.namespace, key: params.key, value: newVal });
+    return { key: params.key, value: newVal, delta: amount };
+  },
+
+  // Atomic decrement — POST /ns/:namespace/:key/_decr  body = { amount?: number }
+  "POST /ns/:namespace/:key/_decr": async (params, req) => {
+    const body = await readBody(req);
+    const amount = typeof body.amount === "number" ? body.amount : 1;
+    // Reuse incr logic with negative amount
+    const entries = getNamespace(params.namespace);
+    const now = new Date().toISOString();
+    const existing = entries.get(params.key);
+    const currentVal = existing && (!existing.expiresAt || Date.now() <= existing.expiresAt) ? existing.value : 0;
+    const newVal = (typeof currentVal === "number" ? currentVal : 0) - amount;
+    const entry = {
+      value: newVal,
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+      expiresAt: existing?.expiresAt || null,
+    };
+    entries.set(params.key, entry);
+    scheduleSave();
+    stats.totalSets++;
+    eventBus.emit(`${params.namespace}:${params.key}`, { type: "counter", namespace: params.namespace, key: params.key, value: newVal, delta: -amount });
+    eventBus.emit(`${params.namespace}:*`, { type: "counter", namespace: params.namespace, key: params.key, value: newVal });
+    return { key: params.key, value: newVal, delta: -amount };
+  },
+
+  // List push — POST /ns/:namespace/:key/_lpush  body = { values: [...] }
+  "POST /ns/:namespace/:key/_lpush": async (params, req) => {
+    const body = await readBody(req);
+    const values = body.values;
+    if (!Array.isArray(values)) return { error: "Body must be { values: [...] }" };
+    const entries = getNamespace(params.namespace);
+    const existing = entries.get(params.key);
+    const arr = existing && (!existing.expiresAt || Date.now() <= existing.expiresAt) && Array.isArray(existing.value) ? existing.value : [];
+    arr.unshift(...values);
+    const now = new Date().toISOString();
+    entries.set(params.key, { value: arr, createdAt: existing?.createdAt || now, updatedAt: now, expiresAt: existing?.expiresAt || null });
+    scheduleSave();
+    stats.totalSets++;
+    return { key: params.key, length: arr.length };
+  },
+
+  // List pop — POST /ns/:namespace/:key/_lpop
+  "POST /ns/:namespace/:key/_lpop": async (params) => {
+    const entries = getNamespace(params.namespace);
+    const existing = entries.get(params.key);
+    if (!existing || (existing.expiresAt && Date.now() > existing.expiresAt) || !Array.isArray(existing.value) || existing.value.length === 0) {
+      return { key: params.key, found: false };
+    }
+    const val = existing.value.shift();
+    existing.updatedAt = new Date().toISOString();
+    scheduleSave();
+    return { key: params.key, found: true, value: val };
+  },
+
+  // List range — POST /ns/:namespace/:key/_lrange  body = { start?, end? }
+  "POST /ns/:namespace/:key/_lrange": async (params, req) => {
+    const body = await readBody(req);
+    const start = body.start || 0;
+    const end = body.end ?? -1;
+    const entries = getNamespace(params.namespace);
+    const existing = entries.get(params.key);
+    if (!existing || (existing.expiresAt && Date.now() > existing.expiresAt) || !Array.isArray(existing.value)) {
+      return { key: params.key, values: [], count: 0 };
+    }
+    const realEnd = end < 0 ? existing.value.length + end + 1 : end + 1;
+    const values = existing.value.slice(start, realEnd);
+    return { key: params.key, values, count: values.length };
+  },
+
+  // Set add — POST /ns/:namespace/:key/_sadd  body = { members: [...] }
+  "POST /ns/:namespace/:key/_sadd": async (params, req) => {
+    const body = await readBody(req);
+    const members = body.members;
+    if (!Array.isArray(members)) return { error: "Body must be { members: [...] }" };
+    const entries = getNamespace(params.namespace);
+    const existing = entries.get(params.key);
+    const set = existing && (!existing.expiresAt || Date.now() <= existing.expiresAt) && Array.isArray(existing.value) ? new Set(existing.value) : new Set();
+    let added = 0;
+    for (const m of members) { if (!set.has(m)) { set.add(m); added++; } }
+    const now = new Date().toISOString();
+    entries.set(params.key, { value: [...set], createdAt: existing?.createdAt || now, updatedAt: now, expiresAt: existing?.expiresAt || null });
+    scheduleSave();
+    stats.totalSets++;
+    return { key: params.key, added, total: set.size };
+  },
+
+  // Set members — POST /ns/:namespace/:key/_smembers
+  "POST /ns/:namespace/:key/_smembers": async (params) => {
+    const entries = getNamespace(params.namespace);
+    const existing = entries.get(params.key);
+    if (!existing || (existing.expiresAt && Date.now() > existing.expiresAt) || !Array.isArray(existing.value)) {
+      return { key: params.key, members: [], count: 0 };
+    }
+    return { key: params.key, members: existing.value, count: existing.value.length };
   },
 };
 
@@ -564,6 +698,43 @@ const server = createServer(async (req, res) => {
     }
 
     const { pathname, query } = parseUrl(req);
+
+    // SSE Watch endpoint: GET /ns/:namespace/_watch?key=optional
+    const watchMatch = pathname.match(/^\/ns\/([^/]+)\/_watch$/);
+    if (watchMatch && req.method === "GET") {
+      const ns = decodeURIComponent(watchMatch[1]);
+      const watchKey = query.key; // optional: watch specific key
+
+      res.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "X-Accel-Buffering": "no",
+      });
+
+      // Send initial connection event
+      res.write(`data: ${JSON.stringify({ type: "connected", namespace: ns, key: watchKey || "*" })}\n\n`);
+
+      const eventName = watchKey ? `${ns}:${watchKey}` : `${ns}:*`;
+      const handler = (data) => {
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+      };
+
+      eventBus.on(eventName, handler);
+
+      // Heartbeat every 30s to keep connection alive
+      const heartbeat = setInterval(() => {
+        res.write(`: heartbeat\n\n`);
+      }, 30000);
+
+      req.on("close", () => {
+        clearInterval(heartbeat);
+        eventBus.off(eventName, handler);
+      });
+
+      return;
+    }
+
     const route = matchRoute(req.method, pathname, query);
 
     if (!route) {
