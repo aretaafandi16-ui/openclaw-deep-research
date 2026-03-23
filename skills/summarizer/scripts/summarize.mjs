@@ -24,6 +24,7 @@ let outputFile = null;
 let batchFile = null;
 let useCache = false;
 let clearCache = false;
+let showScore = true;
 let cacheDir = join(tmpdir(), 'summarizer-cache');
 
 for (let i = 0; i < args.length; i++) {
@@ -37,6 +38,8 @@ for (let i = 0; i < args.length; i++) {
   else if (a === '--cache') { useCache = true; }
   else if (a === '--clear-cache') { clearCache = true; }
   else if (a === '--cache-dir' && args[i + 1]) { cacheDir = args[++i]; useCache = true; }
+  else if (a === '--score') { showScore = true; }
+  else if (a === '--no-score') { showScore = false; }
   else if (a === '--help' || a === '-h') {
     console.log(`Usage: summarize.mjs [URL] [options]
 
@@ -49,6 +52,8 @@ Options:
   --cache                               Enable disk cache for fetched URLs
   --cache-dir <path>                    Custom cache directory
   --clear-cache                         Clear the cache and exit
+  --score                               Show content quality score (default: on)
+  --no-score                            Hide quality score
   --output <file>                       Write to file instead of stdout
   -h, --help                            Show this help`);
     process.exit(0);
@@ -106,6 +111,8 @@ async function processUrl(targetUrl, index) {
     return { error: result.error, url: targetUrl };
   }
 
+  const analysis = showScore ? analyzeContent(result.text) : null;
+
   const header = [
     index != null ? `## [${index + 1}] ${targetUrl}` : `# Extracted Content`,
     '',
@@ -113,13 +120,14 @@ async function processUrl(targetUrl, index) {
     result.contentType ? `**Type:** ${result.contentType}` : null,
     `**Length:** ${result.text.length} chars`,
     result._cached ? `**Cache:** hit ✓` : null,
+    analysis ? `**Metrics:** ${formatScore(analysis)}` : null,
     '',
     '---',
     '',
   ].filter(Boolean).join('\n');
 
   const formatted = formatOutput(result.text, format, deep ? null : maxChars);
-  return { output: header + formatted, url: targetUrl };
+  return { output: header + formatted, url: targetUrl, analysis };
 }
 
 // --- Batch processing ---
@@ -195,6 +203,85 @@ function extractFromHtml(html) {
     .trim();
 
   return text;
+}
+
+// --- Content Quality Scoring ---
+function analyzeContent(text) {
+  const words = text.split(/\s+/).filter(w => w.length > 0);
+  const wordCount = words.length;
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentenceCount = sentences.length;
+  const paragraphs = text.split(/\n{2,}/).filter(p => p.trim().length > 0);
+  const paraCount = paragraphs.length;
+
+  // Average sentence length
+  const avgSentenceLen = sentenceCount > 0 ? Math.round(wordCount / sentenceCount) : 0;
+
+  // Average word length
+  const avgWordLen = wordCount > 0 ? Math.round(words.reduce((sum, w) => sum + w.length, 0) / wordCount * 10) / 10 : 0;
+
+  // Reading time (avg 200 wpm)
+  const readingMinutes = Math.ceil(wordCount / 200);
+
+  // Unique word ratio (vocabulary richness)
+  const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+  const vocabRatio = wordCount > 0 ? Math.round(uniqueWords.size / wordCount * 100) / 100 : 0;
+
+  // Quality score (0-100)
+  // Factors: length adequacy, sentence variety, vocabulary richness, structure
+  let score = 50; // baseline
+
+  // Length bonus (sweet spot: 500-10000 words)
+  if (wordCount >= 500) score += 10;
+  if (wordCount >= 1000) score += 5;
+  if (wordCount >= 3000) score += 5;
+  if (wordCount < 100) score -= 20;
+
+  // Sentence length variety
+  if (avgSentenceLen >= 10 && avgSentenceLen <= 25) score += 10;
+  else if (avgSentenceLen >= 5) score += 5;
+  else score -= 5;
+
+  // Vocabulary richness
+  if (vocabRatio >= 0.5) score += 10;
+  else if (vocabRatio >= 0.3) score += 5;
+
+  // Paragraph structure
+  if (paraCount >= 3) score += 5;
+  if (paraCount >= 10) score += 5;
+
+  // Clamp
+  score = Math.max(0, Math.min(100, score));
+
+  // Quality label
+  let label = '🔴 Poor';
+  if (score >= 80) label = '🟢 Excellent';
+  else if (score >= 60) label = '🟡 Good';
+  else if (score >= 40) label = '🟠 Fair';
+
+  return {
+    wordCount,
+    sentenceCount,
+    paraCount,
+    avgSentenceLen,
+    avgWordLen,
+    readingMinutes,
+    vocabRatio,
+    score,
+    label,
+  };
+}
+
+function formatScore(analysis) {
+  return [
+    `**Word Count:** ${analysis.wordCount.toLocaleString()}`,
+    `**Sentences:** ${analysis.sentenceCount} (avg ${analysis.avgSentenceLen} words)`,
+    `**Paragraphs:** ${analysis.paraCount}`,
+    `**Avg Word Length:** ${analysis.avgWordLen} chars`,
+    `**Vocabulary Richness:** ${(analysis.vocabRatio * 100).toFixed(0)}% unique words`,
+    `**Reading Time:** ~${analysis.readingMinutes} min`,
+    `**Quality Score:** ${analysis.score}/100 ${analysis.label}`,
+  ].join(' | ');
 }
 
 // --- Disk cache ---
@@ -321,6 +408,8 @@ async function main() {
     process.exit(1);
   }
 
+  const analysis = showScore ? analyzeContent(text) : null;
+
   // Output metadata header
   const header = [
     `# Extracted Content`,
@@ -329,6 +418,7 @@ async function main() {
     meta.contentType ? `**Type:** ${meta.contentType}` : null,
     `**Length:** ${text.length} chars`,
     meta.cached ? `**Cache:** hit ✓` : null,
+    analysis ? `**Metrics:** ${formatScore(analysis)}` : null,
     '',
     '---',
     '',

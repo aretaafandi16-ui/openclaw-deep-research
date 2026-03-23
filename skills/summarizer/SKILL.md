@@ -10,6 +10,7 @@ Fetch URLs or paste text, extract readable content, and produce concise markdown
 - **Disk Cache**: Cache fetched content (1h TTL) to avoid re-fetching
 - **Format Options**: Bullet points, paragraph, or structured outline
 - **Deep Mode**: More detailed extraction with key quotes
+- **Content Scoring**: Quality score, reading time, vocabulary richness
 
 ## Usage
 
@@ -48,6 +49,8 @@ node ~/.openclaw/workspace/skills/summarizer/scripts/summarize.mjs --clear-cache
 | `--cache` | false | Enable disk cache (1h TTL, /tmp/summarizer-cache) |
 | `--cache-dir <path>` | /tmp/summarizer-cache | Custom cache directory |
 | `--clear-cache` | - | Clear all cached entries and exit |
+| `--score` | true | Show content quality metrics (word count, reading time, quality score) |
+| `--no-score` | false | Hide quality metrics |
 | `--output` | stdout | Write to file instead of stdout |
 
 ## For LLM Use
@@ -65,5 +68,5 @@ The script outputs clean extracted text. For actual summarization, pair with the
 - [x] Format options (bullets, paragraph, outline)
 - [x] Batch URL processing
 - [x] Disk cache layer (1h TTL)
+- [x] Content quality scoring (word count, reading time, vocab richness, quality 0-100)
 - [ ] PDF summarization support
-- [ ] Content quality scoring
