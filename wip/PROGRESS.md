@@ -130,3 +130,17 @@ Track active projects being built by skill-builder cron job.
 - 2026-03-23 19:38: **Feature**: `/montecarlo` endpoint on health server, `/api/montecarlo` on dashboard server
 - 2026-03-23 19:38: **Docs**: SKILL.md updated with Monte Carlo documentation, CLI usage, API reference
 - 2026-03-23 19:38: **Pushed**: commit 1b739de to feat/openclaw-skill branch (PR blocked by GitHub rate limit — retry later)
+
+- 2026-03-23 20:08: **Feature**: Portfolio Manager (`utils/portfolio.ts`) — multi-market capital allocation
+  - Kelly Criterion position sizing with fractional Kelly (25% default)
+  - Portfolio-level risk: max exposure (70%), per-market (15%), per-sector (40%) caps
+  - Correlation penalty for same-sector positions
+  - Confidence-based size scaling
+  - Dynamic rebalancing detection (sector over-exposure, underperformers)
+  - Per-market win rate, profit factor, EV, Kelly fraction tracking
+  - JSONL persistence for cross-session analysis
+- 2026-03-23 20:08: **Integration**: Dashboard portfolio panel — capital/deployed/P&L cards, sector exposure, positions table, market stats table
+- 2026-03-23 20:08: **Integration**: Health server `/portfolio` endpoint + dashboard `/api/portfolio`
+- 2026-03-23 20:08: **Feature**: Telegram portfolio alerts — `notifyPortfolioRebalance`, `notifyPortfolioAlert`, `notifyPortfolioSummary`
+- 2026-03-23 20:08: **Docs**: SKILL.md updated with full portfolio manager documentation
+- 2026-03-23 20:08: **Pushed**: commit a17a8d2 to feat/openclaw-skill branch (PR blocked by GitHub rate limit — retry later)
