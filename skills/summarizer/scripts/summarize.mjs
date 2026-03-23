@@ -3,10 +3,15 @@
  * summarize.mjs — URL/text summarizer utility
  * Fetches URLs, extracts readable text, or reads from stdin.
  * Outputs clean markdown suitable for LLM summarization or direct use.
+ *
+ * v0.2: batch mode, disk cache
  */
 
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, stat, unlink } from 'node:fs/promises';
 import { createInterface } from 'node:readline';
+import { join } from 'node:path';
+import { createHash } from 'node:crypto';
+import { tmpdir } from 'node:os';
 
 // --- Arg parsing ---
 const args = process.argv.slice(2);
@@ -16,6 +21,10 @@ let maxChars = 8000;
 let deep = false;
 let useStdin = false;
 let outputFile = null;
+let batchFile = null;
+let useCache = false;
+let clearCache = false;
+let cacheDir = join(tmpdir(), 'summarizer-cache');
 
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
@@ -24,6 +33,10 @@ for (let i = 0; i < args.length; i++) {
   else if (a === '--deep') { deep = true; }
   else if (a === '--stdin') { useStdin = true; }
   else if (a === '--output' && args[i + 1]) { outputFile = args[++i]; }
+  else if (a === '--batch' && args[i + 1]) { batchFile = args[++i]; }
+  else if (a === '--cache') { useCache = true; }
+  else if (a === '--clear-cache') { clearCache = true; }
+  else if (a === '--cache-dir' && args[i + 1]) { cacheDir = args[++i]; useCache = true; }
   else if (a === '--help' || a === '-h') {
     console.log(`Usage: summarize.mjs [URL] [options]
 
@@ -32,6 +45,10 @@ Options:
   --max-chars <n>                       Max chars to extract (default: 8000)
   --deep                                Full extraction, no truncation
   --stdin                               Read from stdin instead of URL
+  --batch <file>                        Process URLs from file (one per line)
+  --cache                               Enable disk cache for fetched URLs
+  --cache-dir <path>                    Custom cache directory
+  --clear-cache                         Clear the cache and exit
   --output <file>                       Write to file instead of stdout
   -h, --help                            Show this help`);
     process.exit(0);
@@ -47,8 +64,12 @@ async function readStdin() {
   return lines.join('\n');
 }
 
-// --- Fetch URL content via readability extraction ---
+// --- Fetch URL content via readability extraction (with cache) ---
 async function fetchUrl(targetUrl) {
+  // Check cache first
+  const cached = await cacheGet(targetUrl);
+  if (cached) return { ...cached, _cached: true };
+
   try {
     const res = await fetch(targetUrl, {
       headers: {
@@ -65,15 +86,79 @@ async function fetchUrl(targetUrl) {
     const contentType = res.headers.get('content-type') || '';
     const raw = await res.text();
 
-    // Basic HTML stripping (lightweight readability)
     let text = raw;
     if (contentType.includes('html') || contentType.includes('xml')) {
       text = extractFromHtml(raw);
     }
 
-    return { text, contentType, status: res.status, url: targetUrl };
+    const result = { text, contentType, status: res.status, url: targetUrl };
+    await cacheSet(targetUrl, result);
+    return result;
   } catch (err) {
     return { error: err.message, url: targetUrl };
+  }
+}
+
+// --- Process a single URL and return formatted output ---
+async function processUrl(targetUrl, index) {
+  const result = await fetchUrl(targetUrl);
+  if (result.error) {
+    return { error: result.error, url: targetUrl };
+  }
+
+  const header = [
+    index != null ? `## [${index + 1}] ${targetUrl}` : `# Extracted Content`,
+    '',
+    `**Source:** ${result.url}`,
+    result.contentType ? `**Type:** ${result.contentType}` : null,
+    `**Length:** ${result.text.length} chars`,
+    result._cached ? `**Cache:** hit ✓` : null,
+    '',
+    '---',
+    '',
+  ].filter(Boolean).join('\n');
+
+  const formatted = formatOutput(result.text, format, deep ? null : maxChars);
+  return { output: header + formatted, url: targetUrl };
+}
+
+// --- Batch processing ---
+async function processBatch(filePath) {
+  const content = await readFile(filePath, 'utf-8');
+  const urls = content.split('\n')
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith('#'));
+
+  if (urls.length === 0) {
+    console.error('No URLs found in batch file.');
+    process.exit(1);
+  }
+
+  console.error(`Batch: processing ${urls.length} URLs...`);
+  const results = [];
+
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    console.error(`  [${i + 1}/${urls.length}] ${url}`);
+    const result = await processUrl(url, i);
+    results.push(result);
+    // Small delay between requests to be polite
+    if (i < urls.length - 1) await new Promise(r => setTimeout(r, 500));
+  }
+
+  // Combine outputs
+  const outputs = results.map(r => {
+    if (r.error) return `## ❌ ${r.url}\n\nError: ${r.error}\n`;
+    return r.output;
+  });
+
+  const combined = `# Batch Summary (${urls.length} URLs)\n\nProcessed: ${new Date().toISOString()}\n\n---\n\n` + outputs.join('\n\n---\n\n');
+
+  if (outputFile) {
+    await writeFile(outputFile, combined, 'utf-8');
+    console.error(`Written to ${outputFile}`);
+  } else {
+    console.log(combined);
   }
 }
 
@@ -112,6 +197,42 @@ function extractFromHtml(html) {
   return text;
 }
 
+// --- Disk cache ---
+function cacheKey(url) {
+  return createHash('sha256').update(url).digest('hex').slice(0, 16);
+}
+
+async function cacheGet(url) {
+  if (!useCache) return null;
+  const file = join(cacheDir, `${cacheKey(url)}.json`);
+  try {
+    const raw = await readFile(file, 'utf-8');
+    const entry = JSON.parse(raw);
+    // TTL: 1 hour
+    if (Date.now() - entry.ts > 3600_000) {
+      await unlink(file).catch(() => {});
+      return null;
+    }
+    return entry.data;
+  } catch { return null; }
+}
+
+async function cacheSet(url, data) {
+  if (!useCache) return;
+  await mkdir(cacheDir, { recursive: true });
+  const file = join(cacheDir, `${cacheKey(url)}.json`);
+  await writeFile(file, JSON.stringify({ ts: Date.now(), data }), 'utf-8');
+}
+
+async function clearCacheDir() {
+  try {
+    const { readdir } = await import('node:fs/promises');
+    const files = await readdir(cacheDir);
+    await Promise.all(files.filter(f => f.endsWith('.json')).map(f => unlink(join(cacheDir, f))));
+    console.error(`Cache cleared: ${files.length} entries removed from ${cacheDir}`);
+  } catch { console.error('Cache directory empty or not found.'); }
+}
+
 // --- Format output ---
 function formatOutput(text, fmt, maxLen) {
   const trimmed = maxLen && !deep ? text.slice(0, maxLen) : text;
@@ -147,6 +268,18 @@ function formatOutput(text, fmt, maxLen) {
 
 // --- Main ---
 async function main() {
+  // Handle --clear-cache
+  if (clearCache) {
+    await clearCacheDir();
+    process.exit(0);
+  }
+
+  // Batch mode
+  if (batchFile) {
+    await processBatch(batchFile);
+    return;
+  }
+
   let text;
   let meta = {};
 
@@ -160,7 +293,6 @@ async function main() {
         text = await readFile(url, 'utf-8');
         meta.source = `file:${url}`;
       } catch {
-        // Treat as URL anyway
         url = url.startsWith('http') ? url : `https://${url}`;
         const result = await fetchUrl(url);
         if (result.error) {
@@ -168,7 +300,7 @@ async function main() {
           process.exit(1);
         }
         text = result.text;
-        meta = { source: result.url, contentType: result.contentType, status: result.status };
+        meta = { source: result.url, contentType: result.contentType, status: result.status, cached: result._cached };
       }
     } else {
       const result = await fetchUrl(url);
@@ -177,7 +309,7 @@ async function main() {
         process.exit(1);
       }
       text = result.text;
-      meta = { source: result.url, contentType: result.contentType, status: result.status };
+      meta = { source: result.url, contentType: result.contentType, status: result.status, cached: result._cached };
     }
   } else {
     console.error('No URL or stdin provided. Use --help for usage.');
@@ -196,6 +328,7 @@ async function main() {
     meta.source ? `**Source:** ${meta.source}` : null,
     meta.contentType ? `**Type:** ${meta.contentType}` : null,
     `**Length:** ${text.length} chars`,
+    meta.cached ? `**Cache:** hit ✓` : null,
     '',
     '---',
     '',

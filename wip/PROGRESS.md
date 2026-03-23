@@ -6,7 +6,7 @@ Track active projects being built by skill-builder cron job.
 
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
-| summarizer | In Progress — v0.1 | 2026-03-23 | - |
+| summarizer | v0.2 — batch + cache | 2026-03-23 | - |
 
 ## Completed Projects
 
@@ -19,3 +19,4 @@ Track active projects being built by skill-builder cron job.
 
 - 2026-03-23: Created PROGRESS.md tracker
 - 2026-03-23: Started summarizer skill (URL/text → markdown extraction). v0.1 done: SKILL.md, summarize.mjs with format options (bullets/paragraph/outline), stdin & URL support, HTML stripping.
+- 2026-03-23: Summarizer v0.2 — Added batch URL processing (`--batch urls.txt`), disk cache with 1h TTL (`--cache`), cache clearing (`--clear-cache`). Remaining: PDF support, content scoring.
