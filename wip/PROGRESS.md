@@ -10,6 +10,7 @@ Track active projects being built by skill-builder cron job.
 | agent-pipeline | ✅ Shipped v1.0 | 2026-03-23 | Local |
 | tool-bridge | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-cost | ✅ Shipped v1.0 | 2026-03-23 | Local (pushed) |
+| agent-tasks | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -226,3 +227,12 @@ Track active projects being built by skill-builder cron job.
   - Budget warning events at 50/75/90/95/100% thresholds
   - 73 tests, all passing ✅
   - Committed as b993bca, pushed to GitHub master
+
+- 2026-03-23 23:38: **New Project**: agent-tasks — zero-dep persistent task queue & scheduler for AI agents
+  - **Core** (index.mjs): TaskQueue class with priority FIFO, task chains (waitFor), retry with exponential backoff, concurrency limits, delayed execution (runAt), recurring tasks, dead-letter queue, webhook notifications, timeouts
+  - **Persistence**: JSONL event log + periodic snapshots — survives restarts, auto-restores pending tasks
+  - **Events**: EventEmitter for enqueue/start/complete/retry/dead_letter/cancel/deps_resolved
+  - **MCP Server** (mcp-server.mjs): 11 tools (enqueue/get/list/cancel/kill/stats/dead_letter/retry_dead/prune/clear_completed/export)
+  - **CLI** (cli.mjs): enqueue, serve, list, get, cancel, stats, dead-letter, retry-dead, prune, clear, export, demo, mcp
+  - **38 tests, all passing ✅**
+  - Committed as 17d6b6f, pushed to GitHub master
