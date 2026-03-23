@@ -47,3 +47,12 @@ Track active projects being built by skill-builder cron job.
   - Entry: strong signals (>60), RSI bounce with MACD confirmation, Bollinger squeeze breakout, SMA crossover
   - Exit: signal reversal, RSI extremes (>75/<25), Bollinger band edges (>0.95/<0.05), time decay (>85%)
 - 2026-03-23 14:38: **Integration**: PriceHistory buffers in Trade class, indicator snapshot on each tick, SKILL.md updated
+- 2026-03-23 15:08: **Feature**: Real-time web dashboard (`utils/dashboard.ts`) — full monitoring UI at `:3098/dashboard`
+  - P&L charts: cumulative line + per-session bars (Chart.js)
+  - Win/Loss doughnut distribution
+  - Live technical indicator readout (RSI, MACD, Bollinger, SMAs)
+  - Trade history table with buy/sell tags
+  - Auto-refresh every 5s, dark theme, mobile-responsive
+  - API endpoints: `/api/health`, `/api/pnl`, `/api/trades`, `/api/stats`
+- 2026-03-23 15:08: **Integration**: Dashboard wired into main loop — reports buys, sells, market changes, and indicator snapshots
+- 2026-03-23 15:08: **Docs**: SKILL.md updated with dashboard endpoints and features
