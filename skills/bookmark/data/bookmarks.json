@@ -1,0 +1,33 @@
+{
+  "bookmarks": [
+    {
+      "id": "mn320nplfqww",
+      "url": "https://github.com",
+      "title": "GitHub · Change is constant. GitHub keeps you ahead.",
+      "tags": [],
+      "desc": "Join the world's most widely adopted, AI-powered developer platform where millions of developers, businesses, and the largest open source community build software that advances humanity.",
+      "collection": "default",
+      "favicon": "https://github.githubassets.com/favicons/favicon",
+      "created": "2026-03-23T10:39:52.329Z",
+      "updated": "2026-03-23T10:39:52.329Z",
+      "accessCount": 1,
+      "lastAccessed": "2026-03-23T10:39:59.285Z"
+    },
+    {
+      "id": "mn320z3yrm29",
+      "url": "https://nodejs.org",
+      "title": "Node.js — Run JavaScript Everywhere",
+      "tags": [
+        "dev",
+        "javascript"
+      ],
+      "desc": "Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.",
+      "collection": "default",
+      "favicon": "https://nodejs.org/static/images/favicons/favicon.png",
+      "created": "2026-03-23T10:40:07.101Z",
+      "updated": "2026-03-23T10:40:07.101Z",
+      "accessCount": 0
+    }
+  ],
+  "version": 1
+}

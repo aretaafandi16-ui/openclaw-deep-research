@@ -36,6 +36,84 @@ function flag(args, name) {
   return args.includes(`--${name}`);
 }
 
+// Extract metadata from HTML
+function extractMeta(html, url) {
+  const meta = { title: '', description: '', favicon: '' };
+
+  // Extract title: <title> tag first, then og:title, then <h1>
+  const ogTitle = html.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:title["']/i);
+  const titleTag = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  const h1Tag = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
+
+  meta.title = (ogTitle?.[1] || titleTag?.[1] || h1Tag?.[1] || '').trim();
+
+  // Extract description: og:description, then meta description
+  const ogDesc = html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:description["']/i);
+  const metaDesc = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*name=["']description["']/i);
+
+  meta.description = (ogDesc?.[1] || metaDesc?.[1] || '').trim();
+
+  // Extract favicon
+  const faviconLink = html.match(/<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']/i)
+    || html.match(/<link[^>]*href=["']([^"']+)["'][^>]*rel=["'](?:icon|shortcut icon)["']/i);
+
+  if (faviconLink?.[1]) {
+    try {
+      meta.favicon = new URL(faviconLink[1], url).href;
+    } catch {
+      meta.favicon = faviconLink[1];
+    }
+  } else {
+    // Default favicon location
+    try {
+      const u = new URL(url);
+      meta.favicon = `${u.origin}/favicon.ico`;
+    } catch {}
+  }
+
+  // Decode HTML entities (basic)
+  const decode = s => s
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'")
+    .replace(/&nbsp;/g, ' ');
+
+  meta.title = decode(meta.title);
+  meta.description = decode(meta.description);
+
+  return meta;
+}
+
+// Fetch URL and extract metadata
+async function fetchMeta(url) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    const resp = await fetch(url, {
+      signal: controller.signal,
+      redirect: 'follow',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; BookmarkBot/1.0)',
+        'Accept': 'text/html',
+      }
+    });
+    clearTimeout(timeout);
+
+    if (!resp.ok) return { title: '', description: '', favicon: '' };
+
+    const contentType = resp.headers.get('content-type') || '';
+    if (!contentType.includes('html')) return { title: '', description: '', favicon: '' };
+
+    // Only read first 64KB for metadata
+    const text = await resp.text();
+    return extractMeta(text, url);
+  } catch {
+    return { title: '', description: '', favicon: '' };
+  }
+}
+
 function shortId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
@@ -46,14 +124,27 @@ switch (command) {
   case 'add': {
     const url = args[0];
     if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
-      console.error('Usage: add <url> [--title=...] [--tags=t1,t2] [--desc=...] [--collection=...]');
+      console.error('Usage: add <url> [--title=...] [--tags=t1,t2] [--desc=...] [--collection=...] [--meta]');
       process.exit(1);
     }
 
-    const title = getArg(args, 'title') || url;
+    let title = getArg(args, 'title');
     const tags = (getArg(args, 'tags') || '').split(',').map(t => t.trim().toLowerCase()).filter(Boolean);
-    const desc = getArg(args, 'desc') || '';
+    let desc = getArg(args, 'desc') || '';
     const collection = getArg(args, 'collection') || 'default';
+    const useMeta = flag(args, 'meta') || (!title); // auto-fetch meta if no title provided
+
+    // Auto-extract metadata if --meta flag or no title given
+    let favicon = '';
+    if (useMeta) {
+      console.log('⏳ Fetching metadata...');
+      const meta = await fetchMeta(url);
+      if (!title && meta.title) title = meta.title;
+      if (!desc && meta.description) desc = meta.description;
+      favicon = meta.favicon;
+    }
+
+    if (!title) title = url;
 
     const db = loadDb();
     const now = new Date().toISOString();
@@ -65,6 +156,7 @@ switch (command) {
       existing.title = title;
       existing.tags = [...new Set([...existing.tags, ...tags])];
       if (desc) existing.desc = desc;
+      if (favicon) existing.favicon = favicon;
       existing.updated = now;
       existing.accessCount++;
       saveDb(db);
@@ -77,6 +169,7 @@ switch (command) {
         tags,
         desc,
         collection,
+        favicon,
         created: now,
         updated: now,
         accessCount: 0,
@@ -86,6 +179,7 @@ switch (command) {
       console.log(`🔖 Saved bookmark: ${bookmark.id} — ${title}`);
       if (tags.length) console.log(`   Tags: ${tags.join(', ')}`);
       if (collection !== 'default') console.log(`   Collection: ${collection}`);
+      if (favicon) console.log(`   Favicon: ${favicon}`);
     }
     break;
   }
@@ -117,6 +211,7 @@ switch (command) {
     console.log(`🔖 ${bm.title}`);
     console.log(`   URL: ${bm.url}`);
     if (bm.desc) console.log(`   Desc: ${bm.desc}`);
+    if (bm.favicon) console.log(`   Favicon: ${bm.favicon}`);
     if (bm.tags.length) console.log(`   Tags: ${bm.tags.join(', ')}`);
     console.log(`   Collection: ${bm.collection}`);
     console.log(`   Created: ${bm.created}`);
@@ -139,7 +234,7 @@ switch (command) {
     bms.sort((a, b) => {
       if (sort === 'accessed') return b.accessCount - a.accessCount;
       if (sort === 'created') return new Date(b.created) - new Date(a.created);
-      return new Date(b.updated) - new Date(b.updated);
+      return new Date(b.updated) - new Date(a.updated);
     });
 
     bms = bms.slice(0, limit);
@@ -327,8 +422,47 @@ switch (command) {
     break;
   }
 
+  case 'fetch-meta': {
+    const target = args[0]; // optional: specific id or 'all'
+    const db = loadDb();
+    let bms = target === 'all'
+      ? db.bookmarks
+      : target
+        ? db.bookmarks.filter(b => b.id === target || b.title.toLowerCase().includes(target.toLowerCase()))
+        : db.bookmarks.filter(b => !b.title || b.title === b.url);
+
+    if (bms.length === 0) {
+      console.log('No bookmarks need metadata extraction.');
+      break;
+    }
+
+    console.log(`⏳ Fetching metadata for ${bms.length} bookmark(s)...\n`);
+
+    let updated = 0;
+    for (const bm of bms) {
+      process.stdout.write(`  ${bm.title || bm.url}... `);
+      const meta = await fetchMeta(bm.url);
+      if (meta.title && bm.title === bm.url) {
+        bm.title = meta.title;
+      }
+      if (meta.description && !bm.desc) {
+        bm.desc = meta.description;
+      }
+      if (meta.favicon) {
+        bm.favicon = meta.favicon;
+      }
+      bm.updated = new Date().toISOString();
+      updated++;
+      console.log('✅');
+    }
+
+    saveDb(db);
+    console.log(`\n✅ Updated metadata for ${updated} bookmark(s)`);
+    break;
+  }
+
   default:
     console.error(`Unknown command: ${command}`);
-    console.error('Commands: add, get, list, search, delete, edit, tags, collections, check, export, import, stats');
+    console.error('Commands: add, get, list, search, delete, edit, tags, collections, check, fetch-meta, export, import, stats');
     process.exit(1);
 }

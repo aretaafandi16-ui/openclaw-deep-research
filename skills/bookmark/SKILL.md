@@ -13,7 +13,8 @@ URL bookmark manager with tagging, collections, and dead-link checking.
 
 ## Capabilities
 
-- **Save bookmarks** — Store URLs with title, tags, description, and collection
+- **Save bookmarks** — Store URLs with title, tags, description, collection, and favicon
+- **Auto metadata** — Fetches page title, description, and favicon automatically
 - **Search** — Full-text search across titles, URLs, descriptions, and tags
 - **Collections** — Organize bookmarks into named collections
 - **Tag management** — Filter and browse by tags
@@ -23,8 +24,19 @@ URL bookmark manager with tagging, collections, and dead-link checking.
 ## Quick Start
 
 ```bash
-# Add a bookmark
-node scripts/bookmark.mjs add "https://example.com" --title="Example" --tags=docs,reference --desc="Official docs"
+# Add a bookmark (auto-fetches title, description, favicon)
+node scripts/bookmark.mjs add "https://example.com" --meta
+
+# Add with manual override (still fetches metadata as fallback)
+node scripts/bookmark.mjs add "https://example.com" --title="Custom Title" --tags=docs,reference
+
+# Add without auto-fetch (provide all info manually)
+node scripts/bookmark.mjs add "https://example.com" --title="Example" --tags=docs
+
+# Retroactively extract metadata for existing bookmarks
+node scripts/bookmark.mjs fetch-meta          # bookmarks missing title
+node scripts/bookmark.mjs fetch-meta all      # all bookmarks
+node scripts/bookmark.mjs fetch-meta abc123   # specific bookmark
 
 # List all bookmarks
 node scripts/bookmark.mjs list
@@ -74,6 +86,6 @@ Bookmarks stored in `data/bookmarks.json`. Each bookmark has: id, url, title, ta
 ## Roadmap
 
 - [x] v0.1 — Core CRUD + search + tags + collections + dead-link check
-- [ ] v0.2 — Metadata auto-extraction from URLs (title, description, favicon)
+- [x] v0.2 — Metadata auto-extraction (title, description, favicon) + sort fix
 - [ ] v0.3 — Browser bookmark import (Chrome/Firefox HTML export)
 - [ ] v0.4 — Duplicate detection and link shortening awareness
