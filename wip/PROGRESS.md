@@ -7,6 +7,7 @@ Track active projects being built by skill-builder cron job.
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
+| agent-dial | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-metrics | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-batch | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-embed | ✅ Shipped v1.0 | 2026-03-24 | Local |
@@ -531,3 +532,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 16 commands (create/list/get/delete/add-field/remove-field/start/fill/validate/submit/progress/next/responses/stats/aggregate/export-csv/export-json/demo/serve/mcp)
   - **98 tests, all passing ✅**
   - Committed as 7da72ee, pushed to GitHub master
+
+- 2026-03-24 17:38: **New Project**: agent-dial v1.0 — zero-dep dialog & conversation state machine for AI agents
+  - **Core** (index.mjs): DialogEngine class — node-based dialog flows with 6 node types (message, slot_fill, branch, intent_router, action, end), slot filling with 12+ validators (required/string/number/integer/boolean/email/phone/url/min/max/pattern/enum/range) and transforms (lowercase/uppercase/trim/number/boolean/integer/custom), intent matching via keywords/exact/contains/regex/startsWith/custom function, conditional branching on slotFilled/slotEquals/stateEquals/inputContains/inputRegex/intent/always/custom, session management with configurable eviction, conversation history, dynamic content functions, custom slot parsers, JSONL persistence + snapshots, EventEmitter (9 events)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3128 — stats cards, new session form, session selector, live chat UI, session table with CRUD, context viewer, auto-refresh 5s; REST API with 10 endpoints
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (dial_create_flow/start_session/send_message/get_context/get_history/set_slot/end_session/list_sessions/add_intent/stats)
+  - **CLI** (cli.mjs): 12 commands (create-flow/start/send/context/history/set-slot/end/list/intent/stats/demo/serve/mcp)
+  - **35 tests, all passing ✅**
+  - Committed as fb55e8f, pushed to GitHub master
