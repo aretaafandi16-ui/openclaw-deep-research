@@ -7,6 +7,7 @@ Track active projects being built by skill-builder cron job.
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
+| agent-guard | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-pipeline | ✅ Shipped v1.0 | 2026-03-23 | Local |
 | tool-bridge | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-cost | ✅ Shipped v1.0 | 2026-03-23 | Local (pushed) |
@@ -296,3 +297,11 @@ Track active projects being built by skill-builder cron job.
   - Dashboard panel, Telegram alerts (large trades, microstructure signal, CVD divergence)
   - Health server `/orderflow` endpoint, 26 tests all passing ✅
   - Committed as e065cdf, pushed to GitHub feat/openclaw-skill
+
+- 2026-03-24 02:08: **New Project**: agent-guard — zero-dep schema validation & guardrails for AI agents
+  - **Core** (index.mjs): AgentGuard class — JSON Schema–like validation DSL, PII detection/redaction (email, phone, SSN, CC, JWT, IP), profanity filter, text sanitization, custom rules engine, guard profiles (compose schemas + rules + content guard + rate limit), sliding window rate limiter, JSONL audit trail, EventEmitter for real-time alerting, 6 built-in preset rules
+  - **HTTP Server** (server.mjs): REST API on port 3104 with dark-theme web dashboard — stats cards, live guard testing, audit table, schema viewer
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (validate/check/detect_pii/redact_pii/detect_profanity/sanitize/schema_add/profile_add/stats/audit/list_schemas/list_profiles)
+  - **CLI** (cli.mjs): validate, guard, detect, redact, schema/rule/profile management, audit, stats, serve, mcp, demo
+  - **43 tests, all passing ✅**
+  - Committed and pushed to GitHub master
