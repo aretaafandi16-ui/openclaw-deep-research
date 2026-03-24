@@ -52,6 +52,7 @@ Track active projects being built by skill-builder cron job.
 | agent-events | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-collab | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-record | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-clock | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -590,3 +591,15 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 16 commands (start/stop/pause/resume/record/list/get/records/get-record/bookmark/annotate/diff/search/export/stats/demo/serve)
   - **52 tests, all passing ✅**
   - Committed as 9564f8a, pushed to GitHub master
+
+- 2026-03-24 21:08: **New Project**: agent-clock v1.0 — zero-dep temporal reasoning engine for AI agents
+  - **Core** (index.mjs): AgentClock class — natural language parsing ("tomorrow", "in 3 days", "next monday", "end of month"), business day calculations with holiday calendar support (built-in US 2025-2026), duration parsing & formatting (3 days, 2h 30m), recurring schedules (interval, daily, weekly, full 5-field cron with ranges/steps/lists), deadline tracking with alerts and business-day awareness, timezone-aware operations (IANA), JSONL persistence + periodic snapshots, EventEmitter (9 events)
+  - **Natural Language**: 20+ expressions — now, today, tomorrow, yesterday, eod/eow/eom/sow/som/soy/eoy, "in X", "X ago", "last/next weekday", "next/last business day"
+  - **Business Days**: isBusinessDay, nextBusinessDay, prevBusinessDay, addBusinessDays, businessDaysBetween — all holiday-aware
+  - **Schedules**: parseSchedule (every X, daily at HH:MM, weekly on DAY at HH:MM, 5-field cron), nextOccurrence calculator
+  - **Deadlines**: addDeadline with alert-before and business-days-only options, timeUntilDeadline with formatted output
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3134 — duration calculator, natural language parser, deadline manager, schedule viewer, business day checker; REST API with 12 endpoints
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (clock_now/parse/add/subtract/business_day/business_days_between/schedule/next_occurrence/deadline/time_until/deadlines/stats)
+  - **CLI** (cli.mjs): 15 commands (now/parse/add/subtract/bizday/bizdays-between/add-bizdays/schedule/deadline/deadlines/holidays/stats/serve/mcp/demo/help)
+  - **50 tests, all passing ✅**
+  - Committed as 6e9fc3d, pushed to GitHub master
