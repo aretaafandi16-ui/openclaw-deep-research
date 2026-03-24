@@ -32,6 +32,7 @@ Track active projects being built by skill-builder cron job.
 | agent-queue | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-context | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-graph | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-session | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -422,6 +423,14 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 13 commands (add/get/stats/budget/compress/clear/configure/estimate/models/breakdown/last/export/demo)
   - **53 tests, all passing ✅**
   - Committed as 33a7343, pushed to GitHub master
+
+- 2026-03-24 10:38: **New Project**: agent-session — zero-dep session manager for AI agents
+  - **Core** (index.mjs): SessionManager class — session lifecycle (create/get/touch/extend/destroy), TTL-based expiration with auto-cleanup, multi-turn conversation messages (role-filtered, time-filtered, limited), per-session key-value state, namespace/owner/tag isolation with indexed queries, LRU eviction on max sessions, per-session message limit with oldest-first eviction, JSONL persistence + periodic snapshots, EventEmitter (create/destroy/expire/touch/message)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3118 with real-time stats cards, session table with CRUD, message viewer/send UI, auto-refresh 5s; REST API for sessions/messages/state/touch/extend
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (session_create/get/touch/destroy/list/message_add/message_get/state/extend/stats)
+  - **CLI** (cli.mjs): 12 commands (create/get/touch/destroy/list/message add/list/clear/state/extend/expire/stats/serve/mcp/demo)
+  - **37 tests, all passing ✅**
+  - Committed as 7d74861
 
 - 2026-03-24 10:08: **New Project**: agent-graph — zero-dep graph database for AI agents
   - **Core** (index.mjs): AgentGraph class — labeled nodes with properties, typed weighted edges, adjacency lists, BFS/DFS traversal with depth/direction limits, Dijkstra shortest path, all-paths enumeration, PageRank, topological sort (Kahn's), cycle detection, connected components, strongly connected components (Tarjan's), subgraph extraction, graph merge, Mermaid/DOT/JSON visualization, JSON persistence + JSONL event logs, auto-persist with timer option, max nodes/edges eviction, EventEmitter
