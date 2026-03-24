@@ -19,6 +19,7 @@ Track active projects being built by skill-builder cron job.
 | agent-eval | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-webhook | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-schedule | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-notify | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -337,3 +338,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): schedule, list, trigger, unschedule, enable, disable, upcoming, history, stats, parse, demo, serve, mcp
   - **26 tests, all passing ✅**
   - Committed as b2a8670, pushed to GitHub master
+
+- 2026-03-24 04:38: **New Project**: agent-notify — zero-dep multi-channel notification dispatcher for AI agents
+  - **Core** (index.mjs): AgentNotify class — 6 channel types (console, file, http/webhook, telegram, discord, slack), priority routing (LOW/NORMAL/HIGH/CRITICAL), custom routing rules by tag/priority/function, template engine with {{variable}} interpolation, deduplication with configurable window, per-channel rate limiting (sliding window), quiet hours with batch delivery, exponential backoff retry, JSONL persistence, EventEmitter integration
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3108 with REST API for send/channels/templates/rules/stats
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (notify_send/channel_add/channel_remove/channel_enable/channel_disable/channels_list/template_add/stats/rule_add/quiet_hours)
+  - **CLI** (cli.mjs): send, channel management, templates, rules, quiet-hours, stats, serve, mcp, demo
+  - **47 tests, all passing ✅**
+  - Committed as eb824b9
