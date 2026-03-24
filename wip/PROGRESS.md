@@ -40,6 +40,8 @@ Track active projects being built by skill-builder cron job.
 | agent-config | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-rag | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-fsm | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-lock | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-diff | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
