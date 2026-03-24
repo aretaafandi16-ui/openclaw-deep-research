@@ -12,6 +12,7 @@ Track active projects being built by skill-builder cron job.
 | agent-cost | ✅ Shipped v1.0 | 2026-03-23 | Local (pushed) |
 | agent-tasks | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-memory | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-cache | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -249,3 +250,13 @@ Track active projects being built by skill-builder cron job.
   - **CLI**: full command-line interface with demo mode
   - **52 tests, all passing ✅**
   - Committed as 0cc391e, pushed to GitHub master
+
+- 2026-03-24 00:38: **New Project**: agent-cache — zero-dep caching layer for AI agents
+  - **Core** (index.mjs): AgentCache class with LRU eviction, TTL per entry/global, tag-based + glob-pattern invalidation, hit/miss/eviction stats, JSONL persistence, EventEmitter
+  - **Operations**: get/set/delete/has/clear, mget/mset, invalidateTag/invalidatePattern, keys, touch, getOrSet/wrap, peek, export
+  - **HTTP Cache Middleware**: httpCacheMiddleware() for Express-style servers — auto-cache responses
+  - **HTTP Server** (port 3102): full REST API + dark-theme web dashboard with auto-refresh
+  - **MCP Server**: 12 tools (cache_set/get/delete/has/invalidate_tag/invalidate_pattern/mget/mset/stats/clear/keys/tags)
+  - **CLI**: 16 commands (set/get/delete/has/peek/touch/keys/tags/invalidate-tag/invalidate-pattern/mget/stats/clear/export/set-json/serve/demo)
+  - **40 tests, all passing ✅**
+  - Committed as 0995776, pushed to GitHub master
