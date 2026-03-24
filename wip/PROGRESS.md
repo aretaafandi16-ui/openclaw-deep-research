@@ -53,6 +53,8 @@ Track active projects being built by skill-builder cron job.
 | agent-collab | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-record | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-clock | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-hub | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-diag | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -603,3 +605,26 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 15 commands (now/parse/add/subtract/bizday/bizdays-between/add-bizdays/schedule/deadline/deadlines/holidays/stats/serve/mcp/demo/help)
   - **50 tests, all passing ✅**
   - Committed as 6e9fc3d, pushed to GitHub master
+
+- 2026-03-24 22:08: **New Project**: agent-hub v1.0 — zero-dep capability registry & service mesh for AI agents
+  - **Core** (index.mjs): AgentHub class — agent registration with capabilities/tags/metadata/version/endpoint, capability-based discovery with 7 filter dimensions (capability/group/tags/metadata/version/status/endpoint), 5 routing strategies (round-robin, random, least-loaded, weighted, best-match with scoring), health checking with heartbeat tracking + auto-deregister, per-agent circuit breaker (closed→open→half-open→closed with configurable threshold/reset), named routes with fallback capability, groups/namespaces for multi-tenant isolation, semver-compatible version matching (^, ~, exact), JSONL event logging + periodic snapshots, EventEmitter
+  - **Routing**: Round-robin per capability, random, least-loaded (by current task count), weighted (metadata.weight), best-match (composite scoring: load + success rate + latency + tag matches + metadata matches)
+  - **Discovery**: Filter by capability, group, tags (AND), metadata ($eq/$ne/$gt/$gte/$lt/$lte/$in/$nin/$exists/$contains), version (semver ranges), status, endpoint. Sort by load/success_rate/latency. Limit results.
+  - **Circuit Breaker**: Per-agent, N consecutive failures → open, 60s auto-recovery to half-open, success closes circuit
+  - **Health Checking**: Configurable heartbeat interval (30s) and timeout (90s), auto-deregister or mark offline on stale
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3136 — stats cards (agents/capabilities/routed/success rate/groups/open circuits), agent registration form, task routing UI, agents table with CRUD, capabilities list, named routes management, SSE live event log, auto-refresh 5s; REST API with 15 endpoints + SSE watch
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (hub_register/unregister/heartbeat/discover/route/route_complete/add_route/remove_route/execute_route/list_capabilities/stats/agents)
+  - **CLI** (cli.mjs): 14 commands (register/unregister/discover/route/heartbeat/agents/capabilities/groups/stats/add-route/execute-route/circuit/serve/mcp/demo/help)
+  - **62 tests, all passing ✅**
+  - Committed as f1e09e0, pushed to GitHub master
+
+- 2026-03-24 22:38: **New Project**: agent-diag v1.0 — zero-dep diagnostic & health monitoring toolkit
+  - **Core** (index.mjs): AgentDiag engine — register/run/schedule health checks with categories, tags, thresholds, consecutive failure tracking, severity escalation (INFO→WARNING→CRITICAL), start/stop periodic checking, event-driven
+  - **System Diagnostics**: collectSystem() — platform, arch, CPU, memory, process metrics
+  - **AlertEngine**: rule-based alerting with condition functions, severity, cooldowns, custom actions
+  - **6 Presets**: httpEndpoint, tcpPort, diskUsage, memoryUsage, processAlive, funcCheck
+  - **HTTP Server**: dark-theme web dashboard on port 3137 with REST API
+  - **MCP Server**: 10 tools via JSON-RPC stdio
+  - **CLI**: 12 commands
+  - **29 tests, all passing ✅**
+  - Committed as a5c5de2, pushed to GitHub master
