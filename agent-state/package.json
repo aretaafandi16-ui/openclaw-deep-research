@@ -1,0 +1,17 @@
+{
+  "name": "agent-state",
+  "version": "1.0.0",
+  "description": "Zero-dependency state machine engine for AI agent workflows — define, persist, monitor, and orchestrate complex multi-step processes with guards, timers, history, and recovery",
+  "main": "index.mjs",
+  "type": "module",
+  "bin": {
+    "agent-state": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["state-machine", "ai-agents", "workflow", "orchestration", "zero-dep"],
+  "license": "MIT"
+}
