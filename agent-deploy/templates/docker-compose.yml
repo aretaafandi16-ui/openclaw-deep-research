@@ -1,0 +1,40 @@
+# agent-deploy: Docker Compose template for multi-agent setups
+# Usage: Copy and customize for your agents
+
+version: "3.8"
+
+services:
+  openclaw:
+    image: node:22-slim
+    container_name: openclaw-agent
+    restart: unless-stopped
+    volumes:
+      - openclaw-data:/root/.openclaw
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    command: >
+      bash -c "npm install -g openclaw && openclaw gateway start"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Uncomment to add more agents:
+  # autogpt:
+  #   image: python:3.11-slim
+  #   container_name: autogpt-agent
+  #   restart: unless-stopped
+  #   volumes:
+  #     - autogpt-data:/app/data
+  #   ports:
+  #     - "8000:8000"
+  #   command: >
+  #     bash -c "git clone --depth 1 https://github.com/Significant-Gravitas/AutoGPT.git /app &&
+  #              cd /app && pip install -r requirements.txt && python -m autogpt"
+
+volumes:
+  openclaw-data:
+  # autogpt-data:

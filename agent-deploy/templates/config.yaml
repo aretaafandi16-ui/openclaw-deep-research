@@ -1,0 +1,44 @@
+# agent-deploy configuration template
+# Copy to ~/.agent-deploy/config.yaml and customize
+
+agents:
+  - name: openclaw-main
+    type: openclaw
+    version: latest
+    # provider: digitalocean
+    # size: s-1vcpu-1gb
+    # region: nyc1
+    domain: ""           # Set for SSL auto-setup
+    auto_restart: true
+    backup_daily: true
+    port: 3000
+
+monitoring:
+  check_interval: 30     # Health check interval (seconds)
+  alert_channel: telegram  # telegram | discord | none
+  # telegram_token: ""
+  # telegram_chat_id: ""
+  # discord_webhook: ""
+
+optimization:
+  max_monthly_budget: 20  # USD
+  prefer_cheaper: true
+  auto_migrate: false
+
+scaling:
+  enabled: false
+  scale_up_threshold: 85   # Memory % to trigger scale-up
+  scale_down_threshold: 30 # Memory % to trigger scale-down
+  check_interval: 60       # Seconds between checks
+
+backup:
+  enabled: true
+  schedule: daily          # daily | hourly | weekly
+  max_backups: 10
+  targets:
+    - /home/agent/.openclaw
+    - /opt/agents
+
+ssl:
+  auto_setup: true
+  email: admin@example.com  # For Let's Encrypt notifications

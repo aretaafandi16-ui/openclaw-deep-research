@@ -1,0 +1,37 @@
+[Unit]
+Description=AI Agent (agent-deploy managed)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=agent
+Group=agent
+WorkingDirectory=/opt/agents/main
+ExecStart=/usr/bin/openclaw gateway start
+Restart=on-failure
+RestartSec=10
+StartLimitInterval=200
+StartLimitBurst=5
+
+# Resource limits
+MemoryMax=2G
+CPUQuota=80%
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/agents /var/log/agents /home/agent/.openclaw
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ai-agent
+
+# Environment
+Environment=NODE_ENV=production
+EnvironmentFile=-/etc/agent-deploy/env
+
+[Install]
+WantedBy=multi-user.target
