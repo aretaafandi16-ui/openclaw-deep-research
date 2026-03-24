@@ -37,6 +37,12 @@ _Last reviewed: 2026-03-22_
 - Installed at: `~/.openclaw/workspace/skills/coinfello/`
 - Status: Backup option (better for macOS)
 
+### Polymarket Trading Bot (configured 2026-03-24)
+- Binary market prediction trading
+- Installed at: `~/.openclaw/workspace/polymarket-trading-bot/`
+- RPC: Chainstack Polygon mainnet
+- Status: Configured, waiting for funding
+
 ### Solana Agent Kit (setup 2026-03-22)
 - Open-source toolkit for AI agents × Solana (96 actions built)
 - Installed at: `~/.openclaw/workspace/solana-agent-kit/`

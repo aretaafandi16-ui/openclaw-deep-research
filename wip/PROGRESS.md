@@ -20,8 +20,10 @@ Track active projects being built by skill-builder cron job.
 | agent-webhook | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-schedule | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-notify | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-workflow | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-proxy | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | contribution-tracker | ✅ Shipped v1.0 | 2026-03-24 | [GitHub](https://github.com/aretaafandi02-source/contribution-tracker) |
+| agent-state | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -357,3 +359,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 12 commands (serve/add/remove/list/forward/stats/circuit/circuit-reset/cache-clear/health/reload/demo)
   - **48 tests, all passing ✅**
   - Committed as afde9af, pushed to GitHub master
+
+- 2026-03-24 06:08: **New Project**: agent-workflow — zero-dep DAG-based workflow engine for AI agents
+  - **Core** (index.mjs): Workflow class — DAG execution with topological sort + automatic parallelization, 11 step types (task, transform, condition, parallel, loop, workflow, log, set, delay, assert, switch), conditional execution via when predicate, retry with exponential backoff, per-step timeouts with AbortController, fallback handlers, nested sub-workflow composition, JSONL persistence, EventEmitter
+  - **DAG**: Kahn's algorithm cycle detection, topological sort grouped by depth for parallel execution, Mermaid + Graphviz DOT visualization export
+  - **Registry**: WorkflowRegistry for multi-workflow management, global stats, event forwarding
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3112 with real-time stats cards, workflow table, DAG viewer, creation form, auto-refresh 5s
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (create/run/run_async/result/get/list/remove/add_step/remove_step/runs/dag/stats)
+  - **CLI** (cli.mjs): run, validate, dag, demo, serve, mcp
+  - **35 tests, all passing ✅**

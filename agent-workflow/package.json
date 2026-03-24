@@ -1,0 +1,17 @@
+{
+  "name": "agent-workflow",
+  "version": "1.0.0",
+  "description": "Zero-dependency DAG-based workflow engine for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-workflow": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["workflow", "dag", "pipeline", "ai", "agents", "orchestration"],
+  "license": "MIT"
+}
