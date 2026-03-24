@@ -11,6 +11,7 @@ Track active projects being built by skill-builder cron job.
 | tool-bridge | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-cost | ✅ Shipped v1.0 | 2026-03-23 | Local (pushed) |
 | agent-tasks | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-memory | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -236,3 +237,15 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): enqueue, serve, list, get, cancel, stats, dead-letter, retry-dead, prune, clear, export, demo, mcp
   - **38 tests, all passing ✅**
   - Committed as 17d6b6f, pushed to GitHub master
+
+- 2026-03-24 00:08: **New Project**: agent-memory — zero-dep persistent memory system for AI agents
+  - **Core** (index.mjs): AgentMemory class with keyword-based BM25 search, session isolation, importance scoring, memory consolidation, auto-forget with decay
+  - **Search**: BM25-inspired scoring with importance boost (50%), recency boost (20% for last 24h), access frequency boost (1% per access)
+  - **Consolidation**: Jaccard similarity threshold to merge duplicate/similar memories
+  - **Auto-forget**: configurable importance decay (0.01/day), threshold purge (0.05), auto-cleanup on maxMemories
+  - **Persistence**: JSONL event log + periodic snapshots, survives restarts
+  - **HTTP Server** (port 3101): full REST API + dark-theme web dashboard
+  - **MCP Server**: 12 tools (store/get/search/update/delete/context/consolidate/forget/reinforce/stats/sessions/export)
+  - **CLI**: full command-line interface with demo mode
+  - **52 tests, all passing ✅**
+  - Committed as 0cc391e, pushed to GitHub master
