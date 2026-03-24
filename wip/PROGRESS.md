@@ -42,6 +42,7 @@ Track active projects being built by skill-builder cron job.
 | agent-fsm | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-lock | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-diff | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-chain | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -487,3 +488,13 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 14 commands (add/search/context/get/list/delete/update/stats/namespaces/export/clear/serve/mcp/demo/help)
   - **44 tests, all passing ✅**
   - Committed as 2430cc3
+
+- 2026-03-24 15:38: **New Project**: agent-chain v1.0 — zero-dep reasoning chain engine for AI agents
+  - **Core** (index.mjs): ReasoningChain class — multi-step reasoning with branching, backtracking, confidence scoring (0-1 per step), branch-and-bound search with pruning, step evaluation with scores/notes, chain conclusion with confidence, tree/path visualization, markdown export, merge chains (best/append/union), self-consistency (pick best from N chains), ReAct pattern support, auto-score heuristics, JSON serialization, EventEmitter
+  - **Presets**: 6 templates — chain-of-thought, tree-of-thought, self-consistency, react, decompose, verify
+  - **ChainManager**: multi-chain management with create/get/remove/list/search/globalStats, optional JSON persistence, event forwarding
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3124 — stats cards, chain table with CRUD, tree viewer, step creation form, auto-refresh 5s; REST API for chains/steps/tree/path/search/conclude/evaluate/backtrack/export
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (chain_create/add_step/react/backtrack/evaluate/conclude/search/get_path/get_tree/list/stats/export)
+  - **CLI** (cli.mjs): 12 commands (create/add-step/react/backtrack/evaluate/conclude/search/path/tree/list/stats/export/presets/demo/serve/mcp/help)
+  - **76 tests, all passing ✅**
+  - Committed as 228ab26, pushed to GitHub master
