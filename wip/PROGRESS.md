@@ -43,6 +43,7 @@ Track active projects being built by skill-builder cron job.
 | agent-lock | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-diff | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-chain | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-relay | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -498,3 +499,15 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 12 commands (create/add-step/react/backtrack/evaluate/conclude/search/path/tree/list/stats/export/presets/demo/serve/mcp/help)
   - **76 tests, all passing ✅**
   - Committed as 228ab26, pushed to GitHub master
+
+- 2026-03-24 16:08: **New Project**: agent-relay v1.0 — zero-dep cross-agent pub/sub messaging for AI agents
+  - **Core** (index.mjs): AgentRelay class — pub/sub with wildcard topic patterns (topic/*), direct messaging, broadcast, request/reply with timeout + correlation IDs, priority message queues with retry + exponential backoff, dead letter queue, custom route handlers, message replay for late subscribers, automatic message deduplication per agent, SSE real-time event streaming, JSONL persistence, EventEmitter
+  - **Topics**: exact matching + wildcard patterns (single-level: topic/anything)
+  - **Queues**: priority FIFO, per-entry max retries, exponential backoff requeue, DLQ for exhausted entries
+  - **Request/Reply**: Promise-based with configurable timeout, auto-cleanup on timeout
+  - **Routes**: custom pattern-matched handlers for arbitrary topic patterns
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3125 — real-time stats cards (agents/topics/messages/subscriptions/pending/queued/DLQ/routes), publish form, agent registration, subscription manager, agents + subscriptions tables, live message log via SSE, auto-refresh 3s; REST API with 17 endpoints + SSE watch
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (relay_register/unregister/subscribe/unsubscribe/publish/send/broadcast/request/drain/history/stats/agents)
+  - **CLI** (cli.mjs): 12 commands (register/unregister/subscribe/unsubscribe/publish/send/broadcast/drain/history/agents/stats/demo/serve/mcp)
+  - **56 tests, all passing ✅**
+  - Committed as f76fdc9, pushed to GitHub master
