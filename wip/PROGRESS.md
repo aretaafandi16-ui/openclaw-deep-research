@@ -45,6 +45,7 @@ Track active projects being built by skill-builder cron job.
 | agent-chain | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-relay | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-rate | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-forms | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -521,3 +522,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 12 commands (check/is-allowed/consume/reset/add-limiter/list/stats/state/burst/demo/serve/mcp)
   - **43 tests, all passing ✅**
   - Committed as 334343b, pushed to GitHub master
+
+- 2026-03-24 17:08: **New Project**: agent-forms v1.0 — zero-dep form & survey engine for AI agents
+  - **Core** (index.mjs): FormEngine class — schema-based forms with 17 field types (text/email/number/select/multiselect/boolean/date/rating/slider/computed/hidden/etc), 12+ validators (required/min/max/pattern/enum/email/url/phone/minLength/maxLength/minItems/maxItems/custom), conditional fields with boolean logic (and/or/not) and 12 operators (eq/neq/gt/gte/lt/lte/in/nin/contains/exists/empty/regex), multi-step wizards with per-step validation, natural language bridge (getNextField returns conversational prompts), value transforms (trim/lowercase/uppercase/number/boolean/custom), computed fields auto-calculated from other values, data aggregation (numeric stats: mean/median/stddev/min/max + categorical distributions), CSV/JSON export, JSONL persistence + periodic snapshots, EventEmitter
+  - **Quick Builder**: FormEngine.quickForm() for rapid form creation from array of field defs
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3127 — stats cards (forms/total responses), forms table with CRUD, chat-style form fill UI (conversational Q&A with auto-next-field), response viewer, create form form, auto-refresh 10s; REST API with 16 endpoints (forms CRUD, start/fill/next/validate/submit/progress, responses, aggregate, CSV/JSON export)
+  - **MCP Server** (mcp-server.mjs): 14 tools via JSON-RPC stdio (forms_create/get/list/delete/add_field/start/fill/next/validate/submit/progress/aggregate/export/stats)
+  - **CLI** (cli.mjs): 16 commands (create/list/get/delete/add-field/remove-field/start/fill/validate/submit/progress/next/responses/stats/aggregate/export-csv/export-json/demo/serve/mcp)
+  - **98 tests, all passing ✅**
+  - Committed as 7da72ee, pushed to GitHub master
