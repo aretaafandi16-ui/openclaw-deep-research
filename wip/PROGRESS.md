@@ -35,6 +35,8 @@ Track active projects being built by skill-builder cron job.
 | agent-session | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-transform | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-sync | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-transform | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-sandbox | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -450,3 +452,17 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 18 commands (set/get/delete/keys/entries/increment/decrement/add-to-set/remove-from-set/snapshot/load-snapshot/delta/peers/register-peer/conflicts/log/stats/clear/save/serve/mcp/demo)
   - **72 tests, all passing ✅**
   - Committed as TBD
+
+- 2026-03-24 12:38: **New Project**: agent-sandbox — zero-dep isolated code execution sandbox for AI agents
+  - **Core** (index.mjs): AgentSandbox class — VM-based isolation via Node vm module, configurable timeout (default 5s), context injection via globals, module mocking/stubbing, persistent named snapshots (maintain state across runs), batch concurrent execution, function-as-code execution, expression evaluation with context, stdout/stderr capture, restricted globals (no process/require/fs), execution history with JSONL persistence, EventEmitter (success/execution-error/timeout/snapshot)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3121 — live code execution UI, stats cards (total/success/failed/timeout/avg duration/snapshots), execution history table, auto-refresh 5s; REST API for run/snapshot/history/stats
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (sandbox_run/run_function/run_expression/run_batch/snapshot/run_in_snapshot/list_snapshots/delete_snapshot/stats/history)
+  - **CLI** (cli.mjs): 10 commands (run/eval/batch/snapshot/exec-snap/stats/history/serve/mcp/demo)
+  - **43 tests, all passing ✅**
+  - Committed as 34bbdfc
+
+- 2026-03-24 12:38: **Shipped**: agent-transform v1.0 — zero-dep data transformation engine
+  - **Core**: JSON schema mapping, CSV/TSV↔JSON, template transforms, composable pipelines, type coercion, validation, 25+ built-in transforms
+  - **HTTP/MCP/CLI**: Full server stack, 10 MCP tools, CLI with demo
+  - **101 tests, all passing ✅**
+  - Committed as 34bbdfc
