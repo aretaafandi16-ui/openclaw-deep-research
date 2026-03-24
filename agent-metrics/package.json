@@ -1,0 +1,15 @@
+{
+  "name": "agent-metrics",
+  "version": "1.0.0",
+  "description": "Zero-dependency metrics collection & performance monitoring for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": { "agent-metrics": "./cli.mjs" },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["metrics", "monitoring", "agents", "ai", "prometheus", "zero-dep"],
+  "license": "MIT"
+}
