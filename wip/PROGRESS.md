@@ -553,3 +553,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 12 commands (create-flow/start/send/context/history/set-slot/end/list/intent/stats/demo/serve/mcp)
   - **35 tests, all passing ✅**
   - Committed as fb55e8f, pushed to GitHub master
+
+- 2026-03-24 19:08: **New Project**: agent-secrets v1.0 — zero-dep secrets manager for AI agents
+  - **Core** (index.mjs): AgentSecrets class — AES-256-GCM encryption with scrypt key derivation, namespace isolation, TTL-based expiration, rotation tracking with configurable intervals, tag-based filtering, import/export (encrypted + plaintext), environment variable injection (toEnv/injectEnv), full-text search, JSONL audit logging, max-secrets LRU eviction, EventEmitter for 10+ events
+  - **Encryption**: AES-256-GCM with random 32B salt + 16B IV per encryption, scrypt (N=16384, r=8, p=1), authenticated encryption
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3130 — stats cards, namespace tabs, CRUD form, secrets table with status (active/expired/rotate), tag chips, audit log viewer, auto-refresh 5s; REST API with 11 endpoints
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (secrets_set/get/delete/has/list/search/rotate/needs_rotation/to_env/stats/audit/export)
+  - **CLI** (cli.mjs): 18 commands (set/get/get-json/delete/has/list/keys/search/rotate/needs-rotation/to-env/inject-env/stats/audit/export/export-plain/namespaces/delete-namespace/serve/mcp/demo/help)
+  - **29 tests, all passing ✅**
+  - Committed as 8cc8e14
