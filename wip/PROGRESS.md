@@ -15,6 +15,7 @@ Track active projects being built by skill-builder cron job.
 | agent-memory | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-cache | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-retry | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-trace | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -305,3 +306,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): validate, guard, detect, redact, schema/rule/profile management, audit, stats, serve, mcp, demo
   - **43 tests, all passing ✅**
   - Committed and pushed to GitHub master
+
+- 2026-03-24 02:38: **New Project**: agent-trace — zero-dep distributed tracing for AI agents
+  - **Core** (index.mjs): TraceStore with span lifecycle, typed spans (llm/tool/decision/span/error/custom), nested parent-child trees, span events, error recording, timeline visualization, performance stats (avg/P50/P90/P99/error rate/per-type), query engine with 10+ filter dimensions, async helpers (trace/traceLLM/traceTool), JSONL persistence, EventEmitter integration
+  - **HTTP Server**: dark-theme web dashboard on port 3105 with real-time span monitoring, stats cards, performance table, active spans
+  - **MCP Server** (mcp-server.mjs): 12 tools (trace_start/end/event/error/query/get/timeline/tree/perf/active/export/stats)
+  - **CLI** (cli.mjs): 8 commands (serve/list/trace/perf/active/stats/export/demo/mcp)
+  - **76 tests, all passing ✅**
+  - Committed as e03c8b6, pushed to GitHub master
