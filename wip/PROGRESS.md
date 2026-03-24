@@ -44,6 +44,7 @@ Track active projects being built by skill-builder cron job.
 | agent-diff | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-chain | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-relay | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-rate | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -511,3 +512,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 12 commands (register/unregister/subscribe/unsubscribe/publish/send/broadcast/drain/history/agents/stats/demo/serve/mcp)
   - **56 tests, all passing ✅**
   - Committed as f76fdc9, pushed to GitHub master
+
+- 2026-03-24 16:38: **New Project**: agent-rate v1.0 — zero-dep rate limiting toolkit for AI agents
+  - **Core** (index.mjs): AgentRate class — 5 strategies (fixed_window, sliding_window_log, sliding_window_counter, token_bucket with burst, leaky_bucket), named limiters, per-key tracking, checkAll (multi-limiter worst result), consume(n) batch tokens, HTTP middleware (Express compatible, 429 + Retry-After), JSONL persistence, EventEmitter (check/rejected/limiter:added/removed/reset)
+  - **Strategies**: Fixed window (simple count+reset), sliding window log (exact timestamps), sliding window counter (hybrid weighted), token bucket (refill rate + burst capacity), leaky bucket (constant drain queue)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3126 — stats cards (total/allowed/rejected/accept rate), limiter table, test UI, recent checks, add-limiter form, auto-refresh 3s; REST API for check/reset/stats/limiters/recent/state
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (rate_check/is_allowed/consume/reset/reset_all/add_limiter/remove_limiter/list_limiters/stats/state)
+  - **CLI** (cli.mjs): 12 commands (check/is-allowed/consume/reset/add-limiter/list/stats/state/burst/demo/serve/mcp)
+  - **43 tests, all passing ✅**
+  - Committed as 334343b, pushed to GitHub master
