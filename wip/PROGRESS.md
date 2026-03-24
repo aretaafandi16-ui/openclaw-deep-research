@@ -7,6 +7,7 @@ Track active projects being built by skill-builder cron job.
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
+| agent-metrics | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-batch | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-embed | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-guard | ✅ Shipped v1.0 | 2026-03-24 | Local |
@@ -389,3 +390,13 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): upsert, batch, get, search, delete, update-meta, has, clear, export, import, ids, stats, build-index, serve, mcp, demo
   - **47 tests, all passing ✅**
   - Committed as 5b68119
+
+- 2026-03-24 08:08: **New Project**: agent-metrics — zero-dep metrics collection & performance monitoring for AI agents
+  - **Core** (index.mjs): MetricsStore with Counter, Gauge, Histogram, Timer, SlidingWindowCounter
+  - **Stats**: percentile (P50/P90/P95/P99), mean, stddev, min/max, sum, count
+  - **Features**: tagged metrics, Prometheus text export, JSONL persistence, EventEmitter, auto-timer helper
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3114 with REST API
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio
+  - **CLI** (cli.mjs): 14 commands (counter, gauge, histogram, timer, get, list, snapshot, prometheus, reset, stats, serve, mcp, demo, help)
+  - **46 tests, all passing ✅**
+  - Committed as e77b90f
