@@ -37,6 +37,7 @@ Track active projects being built by skill-builder cron job.
 | agent-sync | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-transform | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-sandbox | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-config | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -466,3 +467,11 @@ Track active projects being built by skill-builder cron job.
   - **HTTP/MCP/CLI**: Full server stack, 10 MCP tools, CLI with demo
   - **101 tests, all passing ✅**
   - Committed as 34bbdfc
+
+- 2026-03-24 13:08: **New Project**: agent-config v1.0 — zero-dep configuration manager for AI agents
+  - **Core** (index.mjs): AgentConfig class — multi-source loading (defaults → file → env → runtime), schema validation with type coercion (string/number/boolean/array/object), enum/min/max/required, hot-reload with file polling, secrets masking (auto-detect + manual), hierarchical dotted-path access, env var mapping (prefix auto-mapping + explicit), snapshots & rollback, template interpolation ({{key}}), JSONL change history, auto-save, EventEmitter (change/reload/watch/snapshot/rollback), namespace proxies
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3122 — stats cards, config CRUD table, change history, snapshot management, schema viewer, auto-refresh 5s; REST API for config/snapshots/history/validate/schema
+  - **MCP Server** (mcp-server.mjs): 14 tools via JSON-RPC stdio (config_set/get/delete/has/keys/get_all/validate/snapshot/rollback/stats/history/load_file/export/interpolate)
+  - **CLI** (cli.mjs): 16 commands (get/set/delete/has/keys/get-all/validate/snapshot/rollback/snapshots/history/export/interpolate/stats/load/serve/mcp/demo/help)
+  - **58 tests, all passing ✅**
+  - Committed as ac24238, pushed to GitHub master
