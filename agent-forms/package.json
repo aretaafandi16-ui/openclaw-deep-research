@@ -1,0 +1,18 @@
+{
+  "name": "agent-forms",
+  "version": "1.0.0",
+  "description": "Zero-dep form & survey engine for AI agents — schema validation, conditional logic, multi-step wizards, response collection",
+  "main": "index.mjs",
+  "type": "module",
+  "bin": {
+    "agent-forms": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "demo": "node cli.mjs demo",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["agent", "forms", "survey", "validation", "conditional", "wizard", "mcp"],
+  "license": "MIT"
+}
