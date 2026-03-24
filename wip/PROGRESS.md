@@ -285,3 +285,14 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): retry, breaker, bulkhead, demo, serve, mcp commands
   - **50 tests, all passing ✅**
   - Committed as 8b2fa7a, pushed to GitHub master
+
+- 2026-03-24 01:38: **Feature**: Order Flow Analyzer (`utils/orderFlow.ts`) — market microstructure intelligence for Polymarket bot
+  - Order Book Imbalance (OBI): distance-weighted bid/ask depth ratio, wall detection, OBI trend tracking
+  - Cumulative Volume Delta (CVD): net buy/sell pressure, trend detection, price divergence alerts
+  - Volume Profile (VPVR): price-level volume distribution, POC, value area, liquidity zones
+  - Large Trade Detection: Welford z-score algorithm, whale/large/moderate classification
+  - Trade Clustering: burst detection with intensity (trades/sec), dominant side analysis
+  - Composite Microstructure Signal: -100 to +100 score, 5 weighted components, confidence rating
+  - Dashboard panel, Telegram alerts (large trades, microstructure signal, CVD divergence)
+  - Health server `/orderflow` endpoint, 26 tests all passing ✅
+  - Committed as e065cdf, pushed to GitHub feat/openclaw-skill
