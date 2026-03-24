@@ -47,6 +47,7 @@ Track active projects being built by skill-builder cron job.
 | agent-relay | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-rate | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-forms | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-plugin | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -532,6 +533,17 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 16 commands (create/list/get/delete/add-field/remove-field/start/fill/validate/submit/progress/next/responses/stats/aggregate/export-csv/export-json/demo/serve/mcp)
   - **98 tests, all passing ✅**
   - Committed as 7da72ee, pushed to GitHub master
+
+- 2026-03-24 18:08: **New Project**: agent-plugin v1.0 — zero-dep plugin system for AI agents
+  - **Core** (index.mjs): PluginManager class — plugin lifecycle (register/load/enable/disable/uninstall), priority-ordered async hook system (sequential/parallel/collect modes), dependency resolution with auto-load + topological sort + circular detection, hot reload without restart, shared context for inter-plugin KV communication with change events, cross-plugin method calls with call/error stat tracking, per-plugin lifecycle hooks (enable/disable/uninstall), JSONL persistence + audit trail, EventEmitter for 8 lifecycle events
+  - **Hook System**: Priority-sorted handler chains, sequential execution (output piped through), parallel execution, collect mode (per-plugin results), per-plugin register/unregister, automatic hook registration from plugin manifest
+  - **Dependency**: Auto-load dependencies before enabling, resolveLoadOrder topological sort, circular dependency detection with error
+  - **SharedContext**: Key-value store with setBy tracking, change/delete events, per-key subscriptions
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3129 — stats cards (total/enabled/loaded/disabled/errors/hooks/calls), plugin table with enable/disable/reload actions, hook viewer, dependency graph, live event log, auto-refresh 5s; REST API with 14 endpoints
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (plugin_register/load/enable/disable/uninstall/reload/call/get/list/hook_call/hooks_list/stats)
+  - **CLI** (cli.mjs): 12 commands (register/load/enable/disable/uninstall/reload/call/list/get/hooks/call-hook/deps/resolve/stats/demo/serve)
+  - **28 tests, all passing ✅**
+  - Committed as fa13fdc, pushed to GitHub master
 
 - 2026-03-24 17:38: **New Project**: agent-dial v1.0 — zero-dep dialog & conversation state machine for AI agents
   - **Core** (index.mjs): DialogEngine class — node-based dialog flows with 6 node types (message, slot_fill, branch, intent_router, action, end), slot filling with 12+ validators (required/string/number/integer/boolean/email/phone/url/min/max/pattern/enum/range) and transforms (lowercase/uppercase/trim/number/boolean/integer/custom), intent matching via keywords/exact/contains/regex/startsWith/custom function, conditional branching on slotFilled/slotEquals/stateEquals/inputContains/inputRegex/intent/always/custom, session management with configurable eviction, conversation history, dynamic content functions, custom slot parsers, JSONL persistence + snapshots, EventEmitter (9 events)
