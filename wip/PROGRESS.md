@@ -16,6 +16,7 @@ Track active projects being built by skill-builder cron job.
 | agent-cache | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-retry | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-trace | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-eval | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -314,3 +315,15 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 8 commands (serve/list/trace/perf/active/stats/export/demo/mcp)
   - **76 tests, all passing ✅**
   - Committed as e03c8b6, pushed to GitHub master
+
+- 2026-03-24 03:08: **New Project**: agent-eval — zero-dep evaluation & benchmarking toolkit for AI agents
+  - **Core** (index.mjs): EvalSuite with test case management, 8 scoring functions (exact, contains, regex, similarity/Dice, json_schema, numeric, length, notEmpty, custom), retry with backoff, timeout, parallel execution, tag filtering, import/export, JSONL persistence
+  - **BenchmarkRunner**: run suites against multiple models, auto-ranking by score/latency/reliability
+  - **A/B Testing**: Welch's t-test for statistical significance with confidence intervals
+  - **Report Generator**: markdown reports with leaderboard, failures, per-tag breakdown
+  - **Scorers**: exact (case-sensitive option), contains, regex (flags), similarity (Dice coefficient, configurable threshold), json_schema (type/required/properties/enum/min/max/items), numeric (tolerance), length (eq/gt/gte/lt/lte/between), notEmpty, custom function
+  - **HTTP Server**: dark-theme web dashboard on port 3106 with quick-score UI, suite management, run history
+  - **MCP Server** (mcp-server.mjs): 12 tools (eval_score/suite_create/case_add/case_remove/run/run_case/list/history/export/import/compare/scorers)
+  - **CLI** (cli.mjs): run, score, add, list, compare, demo, serve, mcp
+  - **47 tests, all passing ✅**
+  - Committed as 29a05c3, pushed to GitHub master
