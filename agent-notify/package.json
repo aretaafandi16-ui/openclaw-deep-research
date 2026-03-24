@@ -1,0 +1,16 @@
+{
+  "name": "agent-notify",
+  "version": "1.0.0",
+  "description": "Zero-dep multi-channel notification dispatcher for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-notify": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs"
+  },
+  "keywords": ["agent", "notify", "notification", "multi-channel", "telegram", "discord", "webhook"],
+  "license": "MIT"
+}
