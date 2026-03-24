@@ -50,6 +50,7 @@ Track active projects being built by skill-builder cron job.
 | agent-forms | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-plugin | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-events | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-collab | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -572,3 +573,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 12 commands (append/get/all/by-type/by-correlation/snapshot/get-snapshot/streams/delete-stream/stats/serve/mcp/demo)
   - **51 tests, all passing ✅**
   - Committed as e84fe80, pushed to GitHub master
+
+- 2026-03-24 20:08: **New Project**: agent-collab v1.0 — zero-dep multi-agent collaboration protocol
+  - **Core** (index.mjs): CollabEngine class — agent registry with roles (coordinator/worker/observer/specialist), priority task queue with capability requirements & dependencies, 5 auto-assignment strategies (round-robin, least-loaded, random, capability, broadcast), parallel delegation of subtasks, task chaining with dependency wiring, inter-agent messaging (direct + broadcast with role exclusions), SharedMemory (key-value with TTL, distributed locks, watchers), JSONL persistence, EventEmitter lifecycle hooks
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (collab_register_agent/unregister_agent/list_agents/create_task/assign_task/auto_assign/delegate/complete_task/fail_task/send_message/get_messages/stats)
+  - **CLI** (cli.mjs): 16 commands (register/unregister/agents/task/assign/auto/start/done/fail/cancel/tasks/msg/messages/broadcast/stats/demo/serve)
+  - **HTTP API**: REST endpoints on port 3132 (/api/stats, /api/agents, /api/tasks, /api/messages)
+  - **27 tests, all passing ✅**
+  - Committed as 407486b
