@@ -31,6 +31,7 @@ Track active projects being built by skill-builder cron job.
 | agent-log | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-queue | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-context | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-graph | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -421,3 +422,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 13 commands (add/get/stats/budget/compress/clear/configure/estimate/models/breakdown/last/export/demo)
   - **53 tests, all passing ✅**
   - Committed as 33a7343, pushed to GitHub master
+
+- 2026-03-24 10:08: **New Project**: agent-graph — zero-dep graph database for AI agents
+  - **Core** (index.mjs): AgentGraph class — labeled nodes with properties, typed weighted edges, adjacency lists, BFS/DFS traversal with depth/direction limits, Dijkstra shortest path, all-paths enumeration, PageRank, topological sort (Kahn's), cycle detection, connected components, strongly connected components (Tarjan's), subgraph extraction, graph merge, Mermaid/DOT/JSON visualization, JSON persistence + JSONL event logs, auto-persist with timer option, max nodes/edges eviction, EventEmitter
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3117 — CRUD for nodes/edges, shortest path UI, stats cards, auto-refresh 5s; REST API for all operations
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (graph_add_node/get_node/remove_node/find_nodes/add_edge/remove_edge/neighbors/shortest_path/traverse/pagerank/toposort/export)
+  - **CLI** (cli.mjs): 16 commands (add-node, get-node, remove-node, find-nodes, add-edge, remove-edge, neighbors, path, traverse, pagerank, toposort, components, scc, export, stats, clear, demo, serve, mcp)
+  - **81 tests, all passing ✅**
+  - Committed as 21e1a2f

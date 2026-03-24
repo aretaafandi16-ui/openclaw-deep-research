@@ -1,0 +1,19 @@
+{
+  "name": "agent-graph",
+  "version": "1.0.0",
+  "description": "Zero-dep graph database for AI agents — nodes, edges, traversal, algorithms, persistence",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-graph": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "demo": "node index.mjs demo",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "cli": "node cli.mjs"
+  },
+  "keywords": ["graph", "database", "ai", "agents", "knowledge-graph", "zero-dep"],
+  "license": "MIT"
+}
