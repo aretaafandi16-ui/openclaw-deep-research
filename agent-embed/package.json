@@ -1,0 +1,18 @@
+{
+  "name": "agent-embed",
+  "version": "1.0.0",
+  "description": "Zero-dep vector embedding store for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-embed": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "demo": "node cli.mjs demo"
+  },
+  "keywords": ["vector", "embedding", "ai", "agent", "search", "similarity", "knn"],
+  "license": "MIT"
+}
