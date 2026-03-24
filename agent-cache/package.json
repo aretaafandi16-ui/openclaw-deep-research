@@ -1,0 +1,18 @@
+{
+  "name": "agent-cache",
+  "version": "1.0.0",
+  "description": "Zero-dependency caching layer for AI agents — LRU, TTL, tags, MCP server, HTTP API",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-cache": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "demo": "node cli.mjs demo"
+  },
+  "keywords": ["cache", "ai-agents", "mcp", "lru", "ttl", "zero-dependency"],
+  "license": "MIT"
+}
