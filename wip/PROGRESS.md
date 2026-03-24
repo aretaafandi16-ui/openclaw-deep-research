@@ -38,6 +38,7 @@ Track active projects being built by skill-builder cron job.
 | agent-transform | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-sandbox | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-config | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-rag | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -475,3 +476,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 16 commands (get/set/delete/has/keys/get-all/validate/snapshot/rollback/snapshots/history/export/interpolate/stats/load/serve/mcp/demo/help)
   - **58 tests, all passing ✅**
   - Committed as ac24238, pushed to GitHub master
+
+- 2026-03-24 13:38: **New Project**: agent-rag v1.0 — zero-dep RAG (Retrieval-Augmented Generation) engine for AI agents
+  - **Core** (index.mjs): AgentRAG class — document chunking (fixed-size/sentence/paragraph/recursive), TF-IDF indexing with cosine similarity, BM25 scoring (k1=1.5, b=0.75), hybrid search (weighted TF-IDF + BM25), cross-encoder style re-ranking (exact phrase boost, term proximity, query coverage, field boosting), query expansion with bigram extraction, metadata filtering ($eq/$ne/$gt/$gte/$lt/$lte/$in/$nin/$exists/$contains), namespace isolation with cross-namespace search, JSONL persistence + periodic snapshots, EventEmitter
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3123 — search UI, document CRUD, stats cards, auto-refresh 10s; REST API for search/context/documents/stats/export
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (rag_add_document/rag_add_documents/rag_search/rag_context/rag_get_document/rag_list_documents/rag_delete_document/rag_update_document/rag_stats/rag_namespaces/rag_export/rag_clear)
+  - **CLI** (cli.mjs): 14 commands (add/search/context/get/list/delete/update/stats/namespaces/export/clear/serve/mcp/demo/help)
+  - **44 tests, all passing ✅**
+  - Committed as 2430cc3
