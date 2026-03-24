@@ -1,0 +1,17 @@
+{
+  "name": "agent-batch",
+  "version": "1.0.0",
+  "description": "Zero-dep batch processing engine for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-batch": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["ai", "agents", "batch", "processing", "concurrency", "retry", "mcp"],
+  "license": "MIT"
+}
