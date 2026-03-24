@@ -29,6 +29,8 @@ Track active projects being built by skill-builder cron job.
 | contribution-tracker | ✅ Shipped v1.0 | 2026-03-24 | [GitHub](https://github.com/aretaafandi02-source/contribution-tracker) |
 | agent-state | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-log | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-queue | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-context | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -411,3 +413,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 10 commands (log, query, stats, tail -f, child, export, serve, mcp, demo, help)
   - **40 tests, all passing ✅**
   - Committed as 11ef9d4, pushed to GitHub master
+
+- 2026-03-24 09:38: **New Project**: agent-context — zero-dep context window manager for AI agents
+  - **Core** (index.mjs): ContextManager class — approximate token counting (character+word heuristic, CJK-aware), 4 truncation strategies (sliding_window, priority, summarize, hybrid), context budgeting (system/tools/conversation allocation), compression (dedup, whitespace strip, merge consecutive), 19 model presets (GPT-4o, Claude 3.5, Gemini 1.5, Llama 3.1, Mistral, etc.), priority handling (system>tool>assistant>user), persistent messages, context templates, JSONL persistence, EventEmitter
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3116 with real-time token usage, role breakdown, message management UI
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (context_add/get/configure/stats/compress/budget/clear/estimate/export/models)
+  - **CLI** (cli.mjs): 13 commands (add/get/stats/budget/compress/clear/configure/estimate/models/breakdown/last/export/demo)
+  - **53 tests, all passing ✅**
+  - Committed as 33a7343, pushed to GitHub master
