@@ -1,0 +1,32 @@
+{
+  "runId": "run_1774322121853",
+  "results": [
+    {
+      "id": "tc_1_1774322121753",
+      "name": "timeout-test",
+      "pass": false,
+      "score": 0,
+      "detail": "Error: Timeout after 100ms",
+      "actual": null,
+      "expected": "x",
+      "duration": 100,
+      "attempts": 1,
+      "error": "Timeout after 100ms",
+      "timestamp": "2026-03-24T03:15:21.853Z",
+      "tags": []
+    }
+  ],
+  "summary": {
+    "suite": "test-timeout",
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "errored": 1,
+    "passRate": 0,
+    "avgScore": 0,
+    "avgDuration": 100,
+    "totalDuration": 100,
+    "byTag": {},
+    "timestamp": "2026-03-24T03:15:21.853Z"
+  }
+}

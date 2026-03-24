@@ -1,0 +1,74 @@
+{
+  "runId": "run_1774322121857",
+  "results": [
+    {
+      "id": "tc_1_1774322121856",
+      "name": "t1",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "a",
+      "expected": "a",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.856Z",
+      "tags": [
+        "unit"
+      ]
+    },
+    {
+      "id": "tc_2_1774322121856",
+      "name": "t2",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "b",
+      "expected": "b",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.856Z",
+      "tags": [
+        "unit"
+      ]
+    },
+    {
+      "id": "tc_3_1774322121856",
+      "name": "t3",
+      "pass": false,
+      "score": 0,
+      "detail": "expected \"z\", got \"c\"",
+      "actual": "c",
+      "expected": "z",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.857Z",
+      "tags": [
+        "integration"
+      ]
+    }
+  ],
+  "summary": {
+    "suite": "test-tags-summary",
+    "total": 3,
+    "passed": 2,
+    "failed": 1,
+    "errored": 0,
+    "passRate": 66.67,
+    "avgScore": 0.667,
+    "avgDuration": 0,
+    "totalDuration": 1,
+    "byTag": {
+      "unit": {
+        "total": 2,
+        "passed": 2,
+        "avgScore": 1
+      },
+      "integration": {
+        "total": 1,
+        "passed": 0,
+        "avgScore": 0
+      }
+    },
+    "timestamp": "2026-03-24T03:15:21.857Z"
+  }
+}

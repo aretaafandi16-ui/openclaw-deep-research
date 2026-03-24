@@ -1,0 +1,31 @@
+{
+  "runId": "run_1774322121752",
+  "results": [
+    {
+      "id": "tc_1_1774322115746",
+      "name": "retry-test",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "ok",
+      "expected": "ok",
+      "duration": 6006,
+      "attempts": 3,
+      "timestamp": "2026-03-24T03:15:21.752Z",
+      "tags": []
+    }
+  ],
+  "summary": {
+    "suite": "test-retry",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "errored": 0,
+    "passRate": 100,
+    "avgScore": 1,
+    "avgDuration": 6006,
+    "totalDuration": 6006,
+    "byTag": {},
+    "timestamp": "2026-03-24T03:15:21.752Z"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "runId": "run_1774322002258",
+  "results": [
+    {
+      "id": "tc_1_1774322002257",
+      "name": "match",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "hello",
+      "expected": "hello",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:13:22.257Z",
+      "tags": []
+    },
+    {
+      "id": "tc_2_1774322002257",
+      "name": "fail",
+      "pass": false,
+      "score": 0,
+      "detail": "expected \"world\", got \"hello\"",
+      "actual": "hello",
+      "expected": "world",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:13:22.257Z",
+      "tags": []
+    }
+  ],
+  "summary": {
+    "suite": "test-run",
+    "total": 2,
+    "passed": 1,
+    "failed": 1,
+    "errored": 0,
+    "passRate": 50,
+    "avgScore": 0.5,
+    "avgDuration": 0,
+    "totalDuration": 0,
+    "byTag": {},
+    "timestamp": "2026-03-24T03:13:22.258Z"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "runId": "run_1774322121855",
+  "results": [
+    {
+      "id": "tc_1_1774322121854",
+      "name": "p0",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val0",
+      "expected": "val0",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.854Z",
+      "tags": []
+    },
+    {
+      "id": "tc_2_1774322121854",
+      "name": "p1",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val1",
+      "expected": "val1",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.854Z",
+      "tags": []
+    },
+    {
+      "id": "tc_3_1774322121854",
+      "name": "p2",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val2",
+      "expected": "val2",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.854Z",
+      "tags": []
+    },
+    {
+      "id": "tc_4_1774322121854",
+      "name": "p3",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val3",
+      "expected": "val3",
+      "duration": 1,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.855Z",
+      "tags": []
+    },
+    {
+      "id": "tc_5_1774322121854",
+      "name": "p4",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val4",
+      "expected": "val4",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.855Z",
+      "tags": []
+    },
+    {
+      "id": "tc_6_1774322121854",
+      "name": "p5",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val5",
+      "expected": "val5",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.855Z",
+      "tags": []
+    },
+    {
+      "id": "tc_7_1774322121854",
+      "name": "p6",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val6",
+      "expected": "val6",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.855Z",
+      "tags": []
+    },
+    {
+      "id": "tc_8_1774322121854",
+      "name": "p7",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "val7",
+      "expected": "val7",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:15:21.855Z",
+      "tags": []
+    }
+  ],
+  "summary": {
+    "suite": "test-parallel",
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "errored": 0,
+    "passRate": 100,
+    "avgScore": 1,
+    "avgDuration": 0,
+    "totalDuration": 1,
+    "byTag": {},
+    "timestamp": "2026-03-24T03:15:21.855Z"
+  }
+}

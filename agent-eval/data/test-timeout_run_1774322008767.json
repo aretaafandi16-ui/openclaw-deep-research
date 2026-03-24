@@ -1,0 +1,31 @@
+{
+  "runId": "run_1774322008767",
+  "results": [
+    {
+      "id": "tc_1_1774322008266",
+      "name": "timeout-test",
+      "pass": true,
+      "score": 1,
+      "detail": "contains \"x\"",
+      "actual": "x",
+      "expected": "x",
+      "duration": 501,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:13:28.767Z",
+      "tags": []
+    }
+  ],
+  "summary": {
+    "suite": "test-timeout",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "errored": 0,
+    "passRate": 100,
+    "avgScore": 1,
+    "avgDuration": 501,
+    "totalDuration": 501,
+    "byTag": {},
+    "timestamp": "2026-03-24T03:13:28.767Z"
+  }
+}

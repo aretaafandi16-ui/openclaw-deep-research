@@ -1,0 +1,44 @@
+{
+  "runId": "run_1774322094259",
+  "results": [
+    {
+      "id": "tc_1_1774322094258",
+      "name": "b1",
+      "pass": true,
+      "score": 1,
+      "detail": "exact match",
+      "actual": "HELLO",
+      "expected": "hello",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:14:54.259Z",
+      "tags": []
+    },
+    {
+      "id": "tc_2_1774322094258",
+      "name": "b2",
+      "pass": true,
+      "score": 1,
+      "detail": "contains \"WORLD\"",
+      "actual": "WORLD",
+      "expected": "WORLD",
+      "duration": 0,
+      "attempts": 1,
+      "timestamp": "2026-03-24T03:14:54.259Z",
+      "tags": []
+    }
+  ],
+  "summary": {
+    "suite": "bench-test",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "errored": 0,
+    "passRate": 100,
+    "avgScore": 1,
+    "avgDuration": 0,
+    "totalDuration": 0,
+    "byTag": {},
+    "timestamp": "2026-03-24T03:14:54.259Z"
+  }
+}
