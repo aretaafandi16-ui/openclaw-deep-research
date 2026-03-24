@@ -33,6 +33,8 @@ Track active projects being built by skill-builder cron job.
 | agent-context | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-graph | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-session | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-transform | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-sync | ✅ Shipped v1.0 | 2026-03-24 | Local |
 
 ## Completed Projects
 
@@ -439,3 +441,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 16 commands (add-node, get-node, remove-node, find-nodes, add-edge, remove-edge, neighbors, path, traverse, pagerank, toposort, components, scc, export, stats, clear, demo, serve, mcp)
   - **81 tests, all passing ✅**
   - Committed as 21e1a2f
+
+- 2026-03-24 12:08: **New Project**: agent-sync — zero-dep distributed data sync & replication engine for AI agents with CRDTs
+  - **Core** (index.mjs): AgentSync class with 5 CRDT types (LWW-Register, G-Counter, PN-Counter, OR-Set, LWW-Map), vector clocks, delta-based sync, full snapshot/restore, 5 conflict resolution strategies (lww/fww/merge/custom/manual), peer management, sync log with audit trail, namespace isolation, JSONL persistence + periodic snapshots, EventEmitter
+  - **CRDTs**: LWWRegister (timestamp+peer tiebreak), GCounter (monotonic, per-peer counts), PNCounter (positive+negative), ORSet (add with unique tags, tombstone remove), LWWMap (per-key timestamp)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3119 — stats cards, key/value CRUD with type selector, sync log table, peer management, auto-refresh 5s; REST API for all operations
+  - **MCP Server** (mcp-server.mjs): 24 tools via JSON-RPC stdio (sync_set/get/get_entry/delete/keys/entries/increment/decrement/add_to_set/remove_from_set/snapshot/load_snapshot/delta/apply_delta/full_sync/register_peer/unregister_peer/peers/conflicts/resolve_conflict/log/stats/clear/save)
+  - **CLI** (cli.mjs): 18 commands (set/get/delete/keys/entries/increment/decrement/add-to-set/remove-from-set/snapshot/load-snapshot/delta/peers/register-peer/conflicts/log/stats/clear/save/serve/mcp/demo)
+  - **72 tests, all passing ✅**
+  - Committed as TBD
