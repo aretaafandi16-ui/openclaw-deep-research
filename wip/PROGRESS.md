@@ -6,6 +6,7 @@ Track active projects being built by skill-builder cron job.
 
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
+| agent-deploy | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
 | agent-dial | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-metrics | ✅ Shipped v1.0 | 2026-03-24 | Local |
