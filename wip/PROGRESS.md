@@ -7,6 +7,8 @@ Track active projects being built by skill-builder cron job.
 | Project | Status | Last Updated | GitHub Repo |
 |---------|--------|-------------|-------------|
 | Polymarket Bot Integration | In Progress | 2026-03-23 | [polymarket-trading-bot](https://github.com/Krypto-Hashers-Community/polymarket-trading-bot) |
+| agent-batch | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-embed | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-guard | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-pipeline | ✅ Shipped v1.0 | 2026-03-23 | Local |
 | tool-bridge | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
@@ -21,6 +23,7 @@ Track active projects being built by skill-builder cron job.
 | agent-schedule | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-notify | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-workflow | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-batch | ✅ Shipped v1.0 | 2026-03-24 | Local |
 | agent-proxy | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | contribution-tracker | ✅ Shipped v1.0 | 2026-03-24 | [GitHub](https://github.com/aretaafandi02-source/contribution-tracker) |
 | agent-state | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
@@ -368,3 +371,21 @@ Track active projects being built by skill-builder cron job.
   - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (create/run/run_async/result/get/list/remove/add_step/remove_step/runs/dag/stats)
   - **CLI** (cli.mjs): run, validate, dag, demo, serve, mcp
   - **35 tests, all passing ✅**
+
+- 2026-03-24 07:38: **New Project**: agent-batch — zero-dep batch processing engine for AI agents
+  - **Core** (index.mjs): BatchEngine class — configurable concurrency, per-item retry with exponential backoff, progress tracking, timeout per item + global, error aggregation, before/after hooks, batch filtering, rate limiting (token bucket), chunked processing, JSONL persistence, EventEmitter
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3113 with real-time stats, batch creation form, run history
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (create/enqueue/run/pause/resume/cancel/status/stats/runs/export/clear)
+  - **CLI** (cli.mjs): create, run, pause, resume, cancel, status, stats, export, clear, demo, serve, mcp
+  - **53 tests, all passing ✅**
+  - Committed as 6d21115
+
+- 2026-03-24 07:38: **New Project**: agent-embed — zero-dep vector embedding store for AI agents
+  - **Core** (index.mjs): EmbedStore class — in-memory Float64 vector store with cosine/euclidean/dot-product similarity, KNN search, IVF approximate nearest neighbor (k-means++ clustering), metadata filtering ($eq/$ne/$gt/$gte/$lt/$lte/$in/$nin/$exists/$contains/$and/$or/$not), batch upsert, namespace isolation, max-vectors eviction, JSONL persistence + snapshots, EventEmitter
+  - **Distance Functions**: cosine similarity, euclidean (normalized), dot product
+  - **IVF Index**: K-means++ initialization, configurable partitions + nprobe, auto-rebuild on mutation threshold
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3113 with real-time search UI, stats cards
+  - **MCP Server** (mcp-server.mjs): 13 tools via JSON-RPC stdio (upsert/upsert_batch/get/search/delete/update_metadata/has/clear/export/import/build_index/stats/ids)
+  - **CLI** (cli.mjs): upsert, batch, get, search, delete, update-meta, has, clear, export, import, ids, stats, build-index, serve, mcp, demo
+  - **47 tests, all passing ✅**
+  - Committed as 5b68119
