@@ -51,6 +51,7 @@ Track active projects being built by skill-builder cron job.
 | agent-plugin | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-events | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-collab | ✅ Shipped v1.0 | 2026-03-24 | Local |
+| agent-record | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -581,3 +582,11 @@ Track active projects being built by skill-builder cron job.
   - **HTTP API**: REST endpoints on port 3132 (/api/stats, /api/agents, /api/tasks, /api/messages)
   - **27 tests, all passing ✅**
   - Committed as 407486b
+
+- 2026-03-24 20:38: **New Project**: agent-record v1.0 — zero-dep session recording & playback engine
+  - **Core** (index.mjs): SessionRecorder class — 10 record types (input, output, tool_call, tool_result, decision, error, annotation, snapshot, metric, custom), session lifecycle (start/pause/resume/stop), async playback iterator with speed control + type filtering + breakpoints, step-through forward/backward, session diffing (similarity score, identical/different/only-in-X), session merging (timestamp or append), bookmarks & annotations with tags, full-text search across sessions, export (JSON/Markdown/replay script), JSONL persistence + snapshots, EventEmitter
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3133 — session CRUD, record viewer with type filter, search, diff tool, bookmark/annotate actions, export buttons, auto-refresh 5s; REST API with 17 endpoints
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (record_start_session/stop_session/entry/get_session/list_sessions/get_records/bookmark/annotate/diff/search/export/stats)
+  - **CLI** (cli.mjs): 16 commands (start/stop/pause/resume/record/list/get/records/get-record/bookmark/annotate/diff/search/export/stats/demo/serve)
+  - **52 tests, all passing ✅**
+  - Committed as 9564f8a, pushed to GitHub master
