@@ -28,6 +28,7 @@ Track active projects being built by skill-builder cron job.
 | agent-proxy | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | contribution-tracker | ✅ Shipped v1.0 | 2026-03-24 | [GitHub](https://github.com/aretaafandi02-source/contribution-tracker) |
 | agent-state | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-log | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -400,3 +401,13 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 14 commands (counter, gauge, histogram, timer, get, list, snapshot, prometheus, reset, stats, serve, mcp, demo, help)
   - **46 tests, all passing ✅**
   - Committed as e77b90f
+
+- 2026-03-24 08:38: **New Project**: agent-log — zero-dep structured logging for AI agents
+  - **Core** (index.mjs): Logger class with 6 levels, child loggers with context propagation, correlation IDs for distributed tracing, span tracking (startSpan/linkSpan, agent-trace compatible), PII redaction (auto + custom fields), sampling, custom filters, EventEmitter
+  - **Transports**: ConsoleTransport (colored stderr/stdout), FileTransport (JSONL + buffered writes + size-based rotation), HttpTransport (batched webhook POST with retry)
+  - **Features**: Timer helpers (time/timeSync for async/sync), query engine (filter by level/context/correlationId/time/search), stats from JSONL files, sequence numbers, auto-correlation ID generation
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3115 — stats cards with level distribution bar chart, searchable/filterable log table, SSE live streaming mode, auto-refresh 3s; REST API for write/query/stats/export
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (log_trace/debug/info/warn/error/fatal, log_query, log_stats, log_child, log_export)
+  - **CLI** (cli.mjs): 10 commands (log, query, stats, tail -f, child, export, serve, mcp, demo, help)
+  - **40 tests, all passing ✅**
+  - Committed as 11ef9d4, pushed to GitHub master
