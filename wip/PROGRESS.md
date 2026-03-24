@@ -20,6 +20,8 @@ Track active projects being built by skill-builder cron job.
 | agent-webhook | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-schedule | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-notify | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-proxy | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| contribution-tracker | ✅ Shipped v1.0 | 2026-03-24 | [GitHub](https://github.com/aretaafandi02-source/contribution-tracker) |
 
 ## Completed Projects
 
@@ -346,3 +348,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): send, channel management, templates, rules, quiet-hours, stats, serve, mcp, demo
   - **47 tests, all passing ✅**
   - Committed as eb824b9
+
+- 2026-03-24 05:08: **New Project**: agent-proxy — zero-dep API gateway & request proxy for AI agents
+  - **Core** (index.mjs): AgentProxy class — named routes with URL prefix matching, 4 LB strategies (round-robin, random, weighted, least-connections), sliding window rate limiting per route, circuit breaker (closed/open/half-open with auto-recovery), TTL-based response caching, request deduplication, health checking with threshold-based upstream marking, retry with exponential backoff, AbortController timeout enforcement, request/response transforms, middleware pipeline (before/after hooks), hot config reload, JSONL logging, EventEmitter
+  - **Components**: RateLimiter, CircuitBreaker, HealthChecker, LoadBalancer, ResponseCache, Deduplicator — all standalone reusable
+  - **HTTP Server** (server.mjs): gateway + admin dashboard (port 3110/3111), dark-theme web UI with real-time stats, route table, circuit status
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (add_route/remove_route/list_routes/forward/stats/circuit_status/circuit_reset/cache_clear/health_check/reload)
+  - **CLI** (cli.mjs): 12 commands (serve/add/remove/list/forward/stats/circuit/circuit-reset/cache-clear/health/reload/demo)
+  - **48 tests, all passing ✅**
+  - Committed as afde9af, pushed to GitHub master
