@@ -1,0 +1,17 @@
+{
+  "name": "agent-memory",
+  "version": "1.0.0",
+  "description": "Zero-dependency persistent memory system for AI agents — keyword search, importance scoring, session context",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-memory": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node index.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["ai", "agent", "memory", "search", "persistence", "mcp"],
+  "license": "MIT"
+}
