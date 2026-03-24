@@ -18,6 +18,7 @@ Track active projects being built by skill-builder cron job.
 | agent-trace | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-eval | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-webhook | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-schedule | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -328,3 +329,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): run, score, add, list, compare, demo, serve, mcp
   - **47 tests, all passing ✅**
   - Committed as 29a05c3, pushed to GitHub master
+
+- 2026-03-24 04:08: **New Project**: agent-schedule — zero-dep time-based scheduler for AI agents
+  - **Core** (index.mjs): AgentSchedule class with full 5-field cron parser (minute/hour/day/month/weekday), ranges, steps, lists; next-run calculator with timezone offset; overlap prevention (maxOverlap per job); retry with exponential backoff + timeout; missed-run recovery; JSON+JSONL persistence; EventEmitter for job:start/success/failure/skipped/missed events
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3107 — real-time stats cards, jobs table with enable/disable, upcoming jobs, run history; REST API for CRUD, trigger, enable/disable, upcoming, history
+  - **MCP Server** (mcp-server.mjs): 10 tools (schedule/unschedule/enable/disable/get/list/trigger/upcoming/history/stats)
+  - **CLI** (cli.mjs): schedule, list, trigger, unschedule, enable, disable, upcoming, history, stats, parse, demo, serve, mcp
+  - **26 tests, all passing ✅**
+  - Committed as b2a8670, pushed to GitHub master
