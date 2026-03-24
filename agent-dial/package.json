@@ -1,0 +1,18 @@
+{
+  "name": "agent-dial",
+  "version": "1.0.0",
+  "description": "Zero-dependency dialog & conversation state machine for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-dial": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "demo": "node cli.mjs demo",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["ai", "agent", "dialog", "conversation", "state-machine", "slot-filling", "intent", "zero-dep"],
+  "license": "MIT"
+}
