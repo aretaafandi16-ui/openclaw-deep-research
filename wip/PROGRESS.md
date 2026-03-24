@@ -13,6 +13,7 @@ Track active projects being built by skill-builder cron job.
 | agent-tasks | ✅ Shipped v1.0 | 2026-03-23 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-memory | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-cache | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-retry | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -168,6 +169,14 @@ Track active projects being built by skill-builder cron job.
   - Multi-asset feed manager (`MultiAssetFeed`) for tracking multiple symbols
   - Connection stats: messages, reconnections, uptime
   - Trade execution stream with buy/sell side detection
+
+- 2026-03-24 00:38: **New Project**: agent-cache — zero-dep caching layer for AI agents
+  - Persistent WS connection with auto-reconnect (exponential backoff + jitter)
+  - Combined ticker + trade streams (price, bid/ask, volume, change%)
+  - Stale connection detection (60s heartbeat check)
+  - Multi-asset feed manager (`MultiAssetFeed`) for tracking multiple symbols
+  - Connection stats: messages, reconnections, uptime
+  - Trade execution stream with buy/sell side detection
 - 2026-03-23 20:38: **Feature**: Smart Alert Engine (`utils/smartAlerts.ts`) — multi-condition alert system
   - Price threshold alerts (above/below)
   - Volume spike detection (rolling average comparison)
@@ -251,6 +260,14 @@ Track active projects being built by skill-builder cron job.
   - **52 tests, all passing ✅**
   - Committed as 0cc391e, pushed to GitHub master
 
+- 2026-03-23 20:38: **Feature**: WebSocket Live Price Feed (`utils/wsPriceFeed.ts`) — real-time price via Binance WebSocket
+  - Persistent WS connection with auto-reconnect (exponential backoff + jitter)
+  - Combined ticker + trade streams (price, bid/ask, volume, change%)
+  - Stale connection detection (60s heartbeat check)
+  - Multi-asset feed manager (`MultiAssetFeed`) for tracking multiple symbols
+  - Connection stats: messages, reconnections, uptime
+  - Trade execution stream with buy/sell side detection
+
 - 2026-03-24 00:38: **New Project**: agent-cache — zero-dep caching layer for AI agents
   - **Core** (index.mjs): AgentCache class with LRU eviction, TTL per entry/global, tag-based + glob-pattern invalidation, hit/miss/eviction stats, JSONL persistence, EventEmitter
   - **Operations**: get/set/delete/has/clear, mget/mset, invalidateTag/invalidatePattern, keys, touch, getOrSet/wrap, peek, export
@@ -260,3 +277,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI**: 16 commands (set/get/delete/has/peek/touch/keys/tags/invalidate-tag/invalidate-pattern/mget/stats/clear/export/set-json/serve/demo)
   - **40 tests, all passing ✅**
   - Committed as 0995776, pushed to GitHub master
+
+- 2026-03-24 01:08: **New Project**: agent-retry — zero-dep resilience toolkit for AI agents
+  - **Core** (index.mjs): ExponentialBackoff, CircuitBreaker (closed/open/half-open FSM), Bulkhead (priority queue + concurrency limit), withTimeout, retry(), RetryOrchestrator (all combined + fallback), HealthChecker (periodic checks + criticality), RetryRegistry
+  - **HTTP Dashboard** (server.mjs): real-time monitoring UI at port 3103, REST API for breaker/bulkhead/health management
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC (retry_execute, circuit_breaker_*, bulkhead_*, orchestrator_*, health_*, registry_status)
+  - **CLI** (cli.mjs): retry, breaker, bulkhead, demo, serve, mcp commands
+  - **50 tests, all passing ✅**
+  - Committed as 8b2fa7a, pushed to GitHub master
