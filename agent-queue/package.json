@@ -1,0 +1,18 @@
+{
+  "name": "agent-queue",
+  "version": "1.0.0",
+  "description": "Zero-dependency message queue for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-queue": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "cli": "node cli.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["agent", "queue", "pubsub", "message-queue", "mcp", "zero-dep"],
+  "license": "MIT"
+}
