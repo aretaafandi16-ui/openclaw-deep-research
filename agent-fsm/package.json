@@ -1,0 +1,18 @@
+{
+  "name": "agent-fsm",
+  "version": "1.0.0",
+  "description": "Zero-dependency finite state machine engine for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-fsm": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "demo": "node cli.mjs demo"
+  },
+  "keywords": ["state-machine", "fsm", "ai-agents", "workflow", "zero-dep"],
+  "license": "MIT"
+}
