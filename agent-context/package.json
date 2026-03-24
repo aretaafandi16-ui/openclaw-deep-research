@@ -1,0 +1,17 @@
+{
+  "name": "agent-context",
+  "version": "1.0.0",
+  "description": "Zero-dependency context window manager for AI agents — token counting, smart truncation, budgeting, compression",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-context": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["ai", "agent", "context", "tokens", "llm", "prompt", "window"],
+  "license": "MIT"
+}
