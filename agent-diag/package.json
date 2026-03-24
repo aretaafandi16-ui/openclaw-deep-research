@@ -1,0 +1,18 @@
+{
+  "name": "agent-diag",
+  "version": "1.0.0",
+  "description": "Zero-dependency diagnostic & health monitoring toolkit for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-diag": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "demo": "node cli.mjs demo"
+  },
+  "keywords": ["ai", "agents", "diagnostics", "health", "monitoring"],
+  "license": "MIT"
+}
