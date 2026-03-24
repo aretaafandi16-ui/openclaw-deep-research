@@ -49,6 +49,7 @@ Track active projects being built by skill-builder cron job.
 | agent-rate | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-forms | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-plugin | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-events | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -562,3 +563,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 18 commands (set/get/get-json/delete/has/list/keys/search/rotate/needs-rotation/to-env/inject-env/stats/audit/export/export-plain/namespaces/delete-namespace/serve/mcp/demo/help)
   - **29 tests, all passing ✅**
   - Committed as 8cc8e14
+
+- 2026-03-24 19:38: **New Project**: agent-events v1.0 — zero-dep event sourcing & saga engine for AI agents
+  - **Core** (index.mjs): EventStore (append-only event log, stream-based access, global sequencing, correlation/causation tracking, pattern-matching subscriptions, temporal queries), ProjectionEngine (materialized views, auto-updating, resettable), SagaEngine (multi-step workflows with automatic backward compensation on failure), EventUpcaster (schema v1→v2→vN migration), ReadModel (CQRS read side), AggregateRoot (build state from events with reducers + snapshot fast-rebuild)
+  - **Persistence**: JSONL event logs per stream + JSON snapshots, survives restarts
+  - **HTTP Server**: dark-theme web dashboard on port 3131 — stats cards, stream browser, event table, append form, auto-refresh 5s; REST API for stats/streams/events/append
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (events_append/get_stream/get_all/by_type/by_correlation/snapshot/get_snapshot/projection_define/projection_state/saga_define/saga_start/stats/streams)
+  - **CLI** (cli.mjs): 12 commands (append/get/all/by-type/by-correlation/snapshot/get-snapshot/streams/delete-stream/stats/serve/mcp/demo)
+  - **51 tests, all passing ✅**
+  - Committed as e84fe80, pushed to GitHub master
