@@ -57,6 +57,7 @@ Track active projects being built by skill-builder cron job.
 | agent-diag | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-feed | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-visualize | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-stream | ✅ Shipped v1.0 | 2026-03-25 | Local |
 
 ## Completed Projects
 
