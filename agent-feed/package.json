@@ -1,0 +1,16 @@
+{
+  "name": "agent-feed",
+  "version": "1.0.0",
+  "description": "Zero-dependency RSS/Atom/JSON Feed aggregator for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": { "feed": "./cli.mjs" },
+  "scripts": {
+    "start": "node server.mjs",
+    "cli": "node cli.mjs",
+    "test": "node test.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["rss", "atom", "feed", "aggregator", "ai-agents", "mcp", "zero-dep"],
+  "license": "MIT"
+}
