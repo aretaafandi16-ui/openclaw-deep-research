@@ -1,0 +1,16 @@
+{
+  "name": "agent-signal",
+  "version": "1.0.0",
+  "description": "Zero-dep signal processing & time-series analysis for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": { "agent-signal": "./cli.mjs" },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs",
+    "demo": "node cli.mjs demo"
+  },
+  "keywords": ["signal-processing", "time-series", "anomaly-detection", "ai-agents", "zero-dep"],
+  "license": "MIT"
+}
