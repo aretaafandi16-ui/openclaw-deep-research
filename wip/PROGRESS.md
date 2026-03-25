@@ -55,6 +55,7 @@ Track active projects being built by skill-builder cron job.
 | agent-clock | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-hub | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-diag | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-feed | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -628,3 +629,11 @@ Track active projects being built by skill-builder cron job.
   - **CLI**: 12 commands
   - **29 tests, all passing ✅**
   - Committed as a5c5de2, pushed to GitHub master
+
+- 2026-03-25 00:38: **New Project**: agent-feed v1.0 — zero-dep RSS/Atom/JSON Feed aggregator for AI agents
+  - **Core** (index.mjs): FeedEngine — zero-dep XML parser, RSS 2.0 + Atom 1.0 + JSON Feed 1.x auto-detect parsing, feed subscription management with groups/tags, auto-fetch polling with configurable intervals, content-hash dedup, change detection, full-text search, multi-dimension filtering, OPML import/export, feed health monitoring, JSONL persistence + snapshots, EventEmitter
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3138 — feed list sidebar, entry browser with search, add-feed form, fetch-all button, unread filter, auto-refresh 30s; REST API with 14 endpoints
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (feed_add/remove/fetch/fetch_all/list/entries/read/mark_read/star/import_opml/export_opml/stats)
+  - **CLI** (cli.mjs): 16 commands (add/remove/fetch/list/entries/search/read/star/import-opml/export-opml/stats/serve/mcp/demo/help)
+  - **78 tests, all passing ✅**
+  - Committed as bc522ca
