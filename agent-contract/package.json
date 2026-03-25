@@ -1,0 +1,17 @@
+{
+  "name": "agent-contract",
+  "version": "1.0.0",
+  "description": "Zero-dep API contract validator & mock server for AI agents",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-contract": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "start": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["ai", "agents", "contract", "api", "validation", "mock", "openapi", "schema", "mcp"],
+  "license": "MIT"
+}
