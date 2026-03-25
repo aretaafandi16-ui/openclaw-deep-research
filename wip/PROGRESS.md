@@ -60,6 +60,8 @@ Track active projects being built by skill-builder cron job.
 | agent-stream | ✅ Shipped v1.0 | 2026-03-25 | Local |
 | agent-invoke | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
 | agent-contract | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
+| agent-replay | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
+| agent-signal | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -676,3 +678,19 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 13 commands (call/chain/parallel/conditional/fallback/list/register/unregister/validate/history/stats/clear-cache/serve/mcp/demo)
   - **27 tests, all passing ✅**
   - Committed as fde32f0, pushed to GitHub master
+
+- 2026-03-25 04:08: **New Project**: agent-signal v1.0 — zero-dep signal processing & time-series analysis engine
+  - **Core** (index.mjs): SignalEngine — 16+ analysis functions, rolling stats, 5 filter types, peak/valley detection, 3 anomaly detection methods, 2 change point detectors, 4 correlation types, frequency analysis (DFT), interpolation, trend decomposition, pattern matching, resampling, pipeline chaining, snapshots, JSONL persistence, EventEmitter
+  - **Filters**: median, exponential smoothing, Butterworth low-pass, high-pass, band-pass
+  - **Anomaly Detection**: z-score (rolling), IQR, moving threshold
+  - **Change Points**: CUSUM (cumulative sum), Bayesian online detection
+  - **Correlation**: Pearson, Spearman, cross-correlation with lag, auto-correlation
+  - **Frequency**: periodogram (naive DFT), dominant frequency/power
+  - **Pattern Matching**: normalized subsequence search with MSE tolerance
+  - **Resampling**: downsample (mean/median/max/min/first/last), upsample (linear/repeat)
+  - **Metrics**: percentiles (P5-P99), skewness, kurtosis, RMS, energy, zero crossings
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (signal_add/metrics/sma/ema/peaks/anomalies/changepoints/correlate/spectrum/decompose/filter/list)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3145 — stats cards, add-signal form, analysis runner, signal table, auto-refresh 5s; REST API with 10 endpoints
+  - **CLI** (cli.mjs): 10 commands (metrics/sma/ema/peaks/valleys/anomalies/changepoints/correlate/spectrum/demo/help)
+  - **82 tests, all passing ✅**
+  - Committed as 5d556c3, pushed to GitHub master
