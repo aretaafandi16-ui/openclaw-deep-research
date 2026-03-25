@@ -58,6 +58,7 @@ Track active projects being built by skill-builder cron job.
 | agent-feed | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-visualize | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-stream | ✅ Shipped v1.0 | 2026-03-25 | Local |
+| agent-invoke | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -646,3 +647,12 @@ Track active projects being built by skill-builder cron job.
   - **CLI** (cli.mjs): 16 commands (add/remove/fetch/list/entries/search/read/star/import-opml/export-opml/stats/serve/mcp/demo/help)
   - **78 tests, all passing ✅**
   - Committed as bc522ca
+
+## Log (continued)
+- 2026-03-25 02:08: **New Project**: agent-invoke v1.0 — zero-dep tool execution engine for AI agents
+  - **Core** (index.mjs): AgentInvoke class — tool registry with JSON Schema validation, type-safe input/output validation with detailed error paths, automatic retry with exponential backoff, TTL-based result caching, 6 composition patterns (chain, pipeline, parallel, conditional, fallback, race), per-tool sliding window rate limiting, middleware hooks (before/after/error), execution history with filtering, per-tool statistics, JSONL persistence, EventEmitter (7 events)
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (invoke_register/call/chain/parallel/conditional/fallback/list/unregister/validate/history/stats/cache_clear) + 5 built-in demo tools
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3141 — stats cards, tool table with filters, quick-call UI, chain builder, execution history, auto-refresh 5s; REST API with 12 endpoints
+  - **CLI** (cli.mjs): 13 commands (call/chain/parallel/conditional/fallback/list/register/unregister/validate/history/stats/clear-cache/serve/mcp/demo)
+  - **27 tests, all passing ✅**
+  - Committed as fde32f0, pushed to GitHub master
