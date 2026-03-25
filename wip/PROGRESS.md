@@ -649,6 +649,15 @@ Track active projects being built by skill-builder cron job.
   - Committed as bc522ca
 
 ## Log (continued)
+- 2026-03-25 02:38: **New Project**: agent-dispatch v1.0 — zero-dep smart event dispatcher & message router
+  - **Core** (index.mjs): Dispatcher class — 9 pattern types (exact/contains/prefix/suffix/regex/glob/in/range/custom/function), 5 routing strategies (first-match/all-match/best-match/weighted/round-robin), 4-level priority queue, fan-out (1→N) & fan-in (N→1), 12-op transform pipeline, 16-operator filter engine ($eq/$ne/$gt/$gte/$lt/$lte/$in/$nin/$exists/$contains/$regex/$type/$between/$custom/$and/$or/$not), dead letter queue with retry, per-route sliding window rate limiting, middleware hooks (before/after/error), message classifier with auto-tagging, exponential backoff retry, JSONL persistence + snapshots, EventEmitter
+  - **Components**: PriorityQueue, RateLimiter, Classifier (standalone)
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3142 with real-time stats, route CRUD, message sender, DLQ manager, queue viewer, SSE live event streaming; REST API with 14 endpoints
+  - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (dispatch_submit/add_route/remove_route/list_routes/enable_route/disable_route/fan_out/process_queue/dlq_retry/dlq_list/history/stats)
+  - **CLI** (cli.mjs): 15 commands (submit/add-route/remove-route/list-routes/enable-route/disable-route/fan-out/process/dlq/dlq-retry/dlq-clear/history/stats/match/classify/demo/serve/mcp)
+  - **91 tests, all passing ✅**
+  - Committed as 4e23b11, pushed to GitHub master
+
 - 2026-03-25 02:08: **New Project**: agent-invoke v1.0 — zero-dep tool execution engine for AI agents
   - **Core** (index.mjs): AgentInvoke class — tool registry with JSON Schema validation, type-safe input/output validation with detailed error paths, automatic retry with exponential backoff, TTL-based result caching, 6 composition patterns (chain, pipeline, parallel, conditional, fallback, race), per-tool sliding window rate limiting, middleware hooks (before/after/error), execution history with filtering, per-tool statistics, JSONL persistence, EventEmitter (7 events)
   - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (invoke_register/call/chain/parallel/conditional/fallback/list/unregister/validate/history/stats/cache_clear) + 5 built-in demo tools
