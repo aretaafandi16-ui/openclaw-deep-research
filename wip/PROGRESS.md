@@ -56,6 +56,7 @@ Track active projects being built by skill-builder cron job.
 | agent-hub | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-diag | ✅ Shipped v1.0 | 2026-03-24 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-feed | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
+| agent-visualize | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -630,7 +631,14 @@ Track active projects being built by skill-builder cron job.
   - **29 tests, all passing ✅**
   - Committed as a5c5de2, pushed to GitHub master
 
-- 2026-03-25 00:38: **New Project**: agent-feed v1.0 — zero-dep RSS/Atom/JSON Feed aggregator for AI agents
+- 2026-03-25 00:38: **New Project**: agent-feed v1.0
+- 2026-03-25 01:08: **New Project**: agent-visualize v1.0 — zero-dep SVG charting engine
+  - **Core** (index.mjs): VisualizeEngine class — 12 chart types (bar, grouped bar, line, pie, donut, scatter, sparkline, heatmap, gauge, radar, stacked area, KPI cards, data table), 5 color palettes, composite dashboard builder, EventEmitter, chart registry
+  - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3140 — interactive chart generator, palette selector, download SVG, example gallery; REST API with 15 endpoints
+  - **MCP Server** (mcp-server.mjs): 10 tools via JSON-RPC stdio (viz_bar/line/pie/donut/scatter/sparkline/heatmap/gauge/radar/kpi)
+  - **CLI** (cli.mjs): 12 commands (bar/line/pie/donut/scatter/sparkline/heatmap/gauge/radar/table/kpi/demo/serve/mcp)
+  - **66 tests, all passing ✅**
+  - Committed as TBD — zero-dep RSS/Atom/JSON Feed aggregator for AI agents
   - **Core** (index.mjs): FeedEngine — zero-dep XML parser, RSS 2.0 + Atom 1.0 + JSON Feed 1.x auto-detect parsing, feed subscription management with groups/tags, auto-fetch polling with configurable intervals, content-hash dedup, change detection, full-text search, multi-dimension filtering, OPML import/export, feed health monitoring, JSONL persistence + snapshots, EventEmitter
   - **HTTP Server** (server.mjs): dark-theme web dashboard on port 3138 — feed list sidebar, entry browser with search, add-feed form, fetch-all button, unread filter, auto-refresh 30s; REST API with 14 endpoints
   - **MCP Server** (mcp-server.mjs): 12 tools via JSON-RPC stdio (feed_add/remove/fetch/fetch_all/list/entries/read/mark_read/star/import_opml/export_opml/stats)
