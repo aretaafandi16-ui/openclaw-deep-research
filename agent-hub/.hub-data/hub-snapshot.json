@@ -1,0 +1,43 @@
+{
+  "agents": [],
+  "capabilities": [],
+  "groups": [],
+  "routes": [
+    [
+      "translation",
+      {
+        "name": "translation",
+        "capability": "translate",
+        "strategy": "best_match",
+        "group": null,
+        "tags": [],
+        "metadata": null,
+        "fallback": null,
+        "timeout": 30000,
+        "retries": 0
+      }
+    ],
+    [
+      "coding",
+      {
+        "name": "coding",
+        "capability": "code",
+        "strategy": "least_loaded",
+        "group": null,
+        "tags": [],
+        "metadata": null,
+        "fallback": null,
+        "timeout": 30000,
+        "retries": 0
+      }
+    ]
+  ],
+  "stats": {
+    "registered": 6,
+    "routed": 6,
+    "failed": 0,
+    "deregistered": 6,
+    "heartbeats": 0
+  },
+  "savedAt": 1774403046793
+}

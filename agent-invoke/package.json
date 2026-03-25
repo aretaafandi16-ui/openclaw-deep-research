@@ -1,0 +1,16 @@
+{
+  "name": "agent-invoke",
+  "version": "1.0.0",
+  "description": "Zero-dep tool execution engine for AI agents — schema validation, retry, caching, composition, MCP compatibility",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": { "agent-invoke": "./cli.mjs" },
+  "scripts": {
+    "test": "node test.mjs",
+    "demo": "node cli.mjs demo",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["ai", "agents", "tools", "mcp", "execution", "schema", "validation", "retry", "caching"],
+  "license": "MIT"
+}
