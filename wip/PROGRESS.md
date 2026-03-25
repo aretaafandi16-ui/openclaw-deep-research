@@ -59,6 +59,7 @@ Track active projects being built by skill-builder cron job.
 | agent-visualize | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi02-source/openclaw-deep-research) |
 | agent-stream | ✅ Shipped v1.0 | 2026-03-25 | Local |
 | agent-invoke | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
+| agent-contract | ✅ Shipped v1.0 | 2026-03-25 | [openclaw-deep-research](https://github.com/aretaafandi16-ui/openclaw-deep-research) |
 
 ## Completed Projects
 
@@ -649,6 +650,16 @@ Track active projects being built by skill-builder cron job.
   - Committed as bc522ca
 
 ## Log (continued)
+- 2026-03-25 03:08: **New Project**: agent-contract v1.0 — zero-dep API contract validator & mock server
+  - **Core** (index.mjs): ContractEngine — schema validation (type/required/properties/enum/format/pattern/min/max), contract CRUD, endpoint management, request validation (method/headers/query/path/body), response validation (flexible matching), mock response storage, mock HTTP server from contract definitions, OpenAPI 3.0 import (paths/params/requestBodies/responses), validation log (JSONL audit trail), markdown report generator, EventEmitter
+  - **Schema Features**: 5 types (string/number/boolean/array/object), 5 string formats (email/uri/uuid/date/date-time), regex patterns, nested properties, array items, enum
+  - **Mock Server**: auto-generate from contract definitions, custom responses per endpoint, request validation on incoming requests, validation pass/fail header
+  - **HTTP Server**: dark-theme web dashboard on port 3144 — stats cards (contracts/validations/passed/failed/mocks/requests), contracts table with endpoints; REST API with 12 endpoints
+  - **MCP Server**: 16 tools via JSON-RPC stdio (contract_create/get/list/delete/export/import/report, endpoint_add/remove, validate_request/response, mock_set/get/serve, openapi_import, stats)
+  - **CLI** (cli.mjs): 16 commands (create/get/list/delete/export/import, add-endpoint/remove-endpoint, validate-req/validate-res, mock-set/mock-serve, openapi-import, report, stats, log, serve, mcp, demo)
+  - **36 tests, all passing ✅**
+  - Committed as af30e5a, pushed to GitHub master
+
 - 2026-03-25 02:38: **New Project**: agent-dispatch v1.0 — zero-dep smart event dispatcher & message router
   - **Core** (index.mjs): Dispatcher class — 9 pattern types (exact/contains/prefix/suffix/regex/glob/in/range/custom/function), 5 routing strategies (first-match/all-match/best-match/weighted/round-robin), 4-level priority queue, fan-out (1→N) & fan-in (N→1), 12-op transform pipeline, 16-operator filter engine ($eq/$ne/$gt/$gte/$lt/$lte/$in/$nin/$exists/$contains/$regex/$type/$between/$custom/$and/$or/$not), dead letter queue with retry, per-route sliding window rate limiting, middleware hooks (before/after/error), message classifier with auto-tagging, exponential backoff retry, JSONL persistence + snapshots, EventEmitter
   - **Components**: PriorityQueue, RateLimiter, Classifier (standalone)
