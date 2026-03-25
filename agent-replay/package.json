@@ -1,0 +1,18 @@
+{
+  "name": "agent-replay",
+  "version": "1.0.0",
+  "description": "Zero-dep deterministic replay & debugging engine for AI agents — content-addressed snapshots, step-through debugging, branching, assertion verification",
+  "type": "module",
+  "main": "index.mjs",
+  "bin": {
+    "agent-replay": "./cli.mjs"
+  },
+  "scripts": {
+    "test": "node test.mjs",
+    "demo": "node cli.mjs demo",
+    "serve": "node server.mjs",
+    "mcp": "node mcp-server.mjs"
+  },
+  "keywords": ["agent", "replay", "debug", "deterministic", "snapshot", "trace", "ai"],
+  "license": "MIT"
+}
